@@ -1,0 +1,22 @@
+pkgname=""
+pkgver=""
+pkgrev=""
+maintainer=""
+homepage=""
+desc=""
+license=""
+src=""
+
+builddir="$srcdir"/"$pkgname"-"$pkgver"
+
+do_build() {
+
+}
+
+do_test() {
+
+}
+
+do_install() {
+
+}

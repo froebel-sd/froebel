@@ -1,0 +1,30 @@
+### This recipe is used in bootstrap
+pkgname="mksh"
+pkgver="R56c"
+pkgrev="0"
+dependencies="compiler-rt musl"
+maintainer="ky0ko <ky0ko@disroot.org>"
+homepage="https://www.mirbsd.org/mksh.htm"
+desc="MirBSD Korn Shell"
+license="ISC+BSD3+MirOS"
+src="http://www.mirbsd.org/MirOS/dist/mir/${pkgname}/${pkgname}-${pkgver}.tgz"
+
+builddir=$srcdir/${pkgname}
+
+do_build() {
+    cd $builddir
+
+    export LDFLAGS="$LDFLAGS -static"
+    sh Build.sh
+}
+
+do_install() {
+    mkdir -p "$pkgdir"/bin
+    install -m755 "$builddir"/mksh "$pkgdir"/bin/mksh
+    cd "$pkgdir"/bin
+    ln -s mksh sh
+}
+
+do_bootstrap_install() {
+    install -m755 $builddir/mksh $froebelroot/bin/mksh
+}

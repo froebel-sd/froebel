@@ -1,0 +1,34 @@
+pkgname="libressl"
+pkgver="2.8.0"
+pkgrev="0"
+maintainer="ky0ko <ky0ko@disroot.org>"
+homepage="https://www.libressl.org/"
+desc="free, modern, secure ssl/tls encryption library"
+license="Apache1; BSD2; ISC; PD"
+dependencies="musl compiler-rt netbsd-csu linux-headers"
+src="https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/${pkgname}-${pkgver}.tar.gz"
+
+builddir="$srcdir"/"$pkgname"-"$pkgver"
+
+do_build() { \
+    cd "$builddir"
+
+    cmake \
+        -DCMAKE_CROSSCOMPILING="ON" \
+        -DCMAKE_SYSROOT="$FBUILD_SYSROOT" \
+        -DCMAKE_INSTALL_PREFIX="" \
+        -DCMAKE_BUILD_TYPE="MinSizeRel" \
+        -DCMAKE_C_COMPILER="$CC" \
+        -DCMAKE_CXX_COMPILER="$CXX" \
+        -DCMAKE_C_FLAGS_MINSIZEREL_INIT="$CFLAGS" \
+        -DCMAKE_CXX_FLAGS_MINSIZEREL_INIT="$CXXFLAGS" \
+        .
+
+    make
+}
+
+do_install() {
+    cd "$builddir"
+
+    make DESTDIR="$pkgdir" install
+}

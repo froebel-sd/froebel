@@ -1,0 +1,40 @@
+pkgname="netbsd-csu"
+pkgver="7.1"
+pkgrev="0"
+maintainer="ky0ko <ky0ko@disroot.org>"
+homepage="http://cvsweb.netbsd.org/bsdweb.cgi/src/lib/csu/"
+desc="c runtime files from netbsd"
+license="BSD2"
+src="https://dev.gentoo.org/~mgorny/dist/netbsd-csu-7.1.tar.xz"
+
+builddir="$srcdir"/"$pkgname"-"$pkgver"
+
+do_build() {
+    cd "$builddir"/lib/csu
+
+    arch="$TARGET_ARCH"
+    case "$TARGET_ARCH" in
+        x86_64) arch=amd64;;
+        x32) arch=amd64;;
+    esac
+
+    export MKPIC="yes"
+    export MKSTRIPIDENT="no"
+
+    ln -s "$builddir"/sys/arch/"$arch"/include common/machine
+    bmake crtbegin.o crtbeginS.o crtend.o
+}
+
+do_test() {
+
+}
+
+do_install() {
+    mkdir -p "$pkgdir"/lib
+    install -m644 "$builddir"/lib/csu/crtbegin.o "$pkgdir"/lib/crtbegin.o
+    install -m644 "$builddir"/lib/csu/crtbeginS.o "$pkgdir"/lib/crtbeginS.o
+    install -m644 "$builddir"/lib/csu/crtend.o "$pkgdir"/lib/crtend.o
+    cd "$pkgdir"/lib/
+    ln -s crtend.o crtendS.o
+    ln -s crtbegin.o crtbeginT.o
+}

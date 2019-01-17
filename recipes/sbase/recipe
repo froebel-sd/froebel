@@ -1,0 +1,35 @@
+pkgname="sbase"
+pkgver="2018.07.07"
+pkgrev="0"
+dependencies="compiler-rt musl"
+maintainer="ky0ko <ky0ko@disroot.org>"
+homepage="https://core.suckless.org/sbase"
+desc="suckless.org portable base utilities"
+license="MIT"
+src="git://git.suckless.org/sbase"
+commit="7441770cfd70bbd3caafd6cf035dd74a860741ae"
+
+builddir="$srcdir"/"$pkgname"-"$pkgver"
+
+do_fetch() {
+    mkdir -p $srcdir
+    cd "$srcdir"
+    if [ -d "$pkgname"-"$pkgver" ]; then
+        rm -rf "$pkgname"-"$pkgver"
+    fi
+    git clone "$src" "$pkgname"-"$pkgver"
+    cd "$pkgname"-"$pkgver"
+    git reset --hard "$commit"
+}
+
+do_build() {
+    cp froebel-config.mk "$builddir"/config.mk
+    cd "$builddir"
+
+    make
+}
+
+do_install() {
+    cd "$builddir"
+    make DESTDIR="$pkgdir" install
+}

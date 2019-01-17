@@ -1,0 +1,39 @@
+### This recipe is used in bootstrap
+pkgname="lld"
+source ../llvm/current_ver
+pkgver="$_llvm_current_ver"
+pkgrev="0"
+maintainer="ky0ko <ky0ko@disroot.org>"
+homepage="https://llvm.org/"
+desc="LLVM C compiler frontend"
+dependencies="musl compiler-rt libcxxabi libcxx libcxxabi-headers libcxx-headers libunwind llvm zlib ncurses"
+license="UoI-NCSA"
+src="http://releases.llvm.org/${pkgver}/${pkgname}-${pkgver}.src.tar.xz"
+
+builddir="$srcdir"/${pkgname}-"$pkgver".src/build
+
+do_build() {
+    mkdir -p "$builddir"
+    cd "$builddir"
+
+    cmake \
+        -DCMAKE_CROSSCOMPILING="ON" \
+        -DCMAKE_SYSROOT="$FBUILD_SYSROOT" \
+        -DCMAKE_INSTALL_PREFIX="/" \
+        -DCMAKE_BUILD_TYPE=MinSizeRel \
+        -DCMAKE_C_FLAGS_MINSIZEREL_INIT="$CFLAGS -v" \
+        -DCMAKE_CXX_FLAGS_MINSIZEREL_INIT="-I$(readlink -f '../lib/Headers') $CXXFLAGS -v" \
+        -DCMAKE_EXE_LINKER_FLAGS_MINSIZEREL_INIT="$LDFLAGS -v" \
+        \
+        -DLLVM_ENABLE_TERMINFO="OFF" \
+        -DLLVM_ENABLE_LIBXML2="OFF" \
+        ..
+
+    make
+}
+
+do_install() {
+    cd "$builddir"
+
+    make DESTDIR="$pkgdir" install
+}

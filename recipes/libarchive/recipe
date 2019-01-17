@@ -1,0 +1,30 @@
+pkgname="libarchive"
+pkgver="3.3.3"
+pkgrev="0"
+maintainer="ky0ko <ky0ko@disroot.org>"
+homepage="http://libarchive.org/"
+desc="library for handling various archive formats"
+license="various"
+dependencies="musl libressl"
+src="http://libarchive.org/downloads/${pkgname}-${pkgver}.tar.gz"
+
+builddir="$srcdir"/"$pkgname"-"$pkgver"
+
+do_build() {
+    cd "$builddir"
+
+    ./configure \
+        --prefix="" \
+        --host="$HOST_TRIPLE" \
+        --build="$TARGET_TRIPLE" \
+        --target="$TARGET_TRIPLE" \
+        --without-xml2 \
+
+    make
+}
+
+do_install() {
+    cd "$builddir"
+
+    make DESTDIR="$pkgdir" install    
+}

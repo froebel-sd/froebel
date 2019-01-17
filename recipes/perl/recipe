@@ -1,0 +1,26 @@
+pkgname="perl"
+pkgver="5.26.2"
+_pkgver_major=${pkgver%.*.*}
+pkgrev="0"
+maintainer="ky0ko <ky0ko@disroot.org>"
+homepage="https://www.perl.org/"
+desc="perl programming language"
+license=""
+src="https://www.cpan.org/src/${_pkgver_major}.0/${pkgname}-${pkgver}.tar.gz"
+
+builddir="$srcdir"/"$pkgname"-"$pkgver"
+
+do_build() {
+    cd "$builddir"
+
+    mksh Configure
+    exit 1
+}
+
+do_test() {
+
+}
+
+do_install() {
+
+}

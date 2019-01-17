@@ -1,0 +1,26 @@
+pkgname="libcap"
+pkgver="2.26"
+pkgrev="0"
+maintainer="ky0ko <ky0ko@disroot.org>"
+homepage="https://sites.google.com/site/fullycapable/"
+desc="library for managing linux kernel capabilities"
+license="various"
+dependencies="linux-headers musl"
+src="https://git.kernel.org/pub/scm/libs/${pkgname}/${pkgname}.git/snapshot/${pkgname}-${pkgver}.tar.gz"
+
+builddir="$srcdir"/"$pkgname"-"$pkgver"
+
+do_build() {
+    cp Make.Rules "$builddir"/
+    cd "$builddir"
+
+    make DESTDIR="$pkgdir" lib="/lib"
+}
+
+do_install() {
+    cd "$builddir"
+
+    make DESTDIR="$pkgdir" lib="/lib" install    
+}
+
+

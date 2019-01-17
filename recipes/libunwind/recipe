@@ -1,0 +1,57 @@
+pkgname="libunwind"
+source ../llvm/current_ver
+pkgver="$_llvm_current_ver"
+pkgrev="0"
+maintainer="ky0ko <ky0ko@disroot.org>"
+homepage="https://libunwind.llvm.org/"
+desc="llvm compiler runtime support library"
+license="MIT/UIUC"
+dependencies="musl compiler-rt libcxxabi-headers libcxx-headers"
+src="https://releases.llvm.org/${pkgver}/${pkgname}-${pkgver}.src.tar.xz"
+
+builddir="$srcdir"/"$pkgname"-"$pkgver".src/build
+
+do_build() {
+    mkdir -p "$builddir"
+    cd "$builddir"
+
+    export CXXFLAGS="$CXXFLAGS -nostdlib"
+
+    cmake \
+        -DCMAKE_INSTALL_PREFIX="/" \
+        -DCMAKE_BUILD_TYPE="MinSizeRel" \
+        -DCMAKE_C_COMPILER="$CC" \
+        -DCMAKE_CXX_COMPILER="$CXX" \
+        -DCMAKE_C_FLAGS_MINSIZEREL_INIT="$CFLAGS -v" \
+        -DCMAKE_CXX_FLAGS_MINSIZEREL_INIT="$CXXFLAGS -v" \
+        -DCMAKE_EXE_LINKER_FLAGS_MINSIZEREL_INIT="$LDFLAGS -v" \
+        \
+        -DLLVM_ENABLE_LIBCXX=ON \
+        \
+        -DLIBUNWIND_USE_COMPILER_RT=ON \
+        ..
+
+    make
+}
+
+do_test() {
+
+}
+
+do_install() {
+    cd "$builddir"/
+    make DESTDIR="$pkgdir" install
+
+    cd ..
+
+    mkdir -p "$pkgdir"/include
+    for file in include/**; do 
+        if [ -d $file ]; then
+            echo "make directory $file"
+            mkdir -p "$pkgdir"/$file
+        else
+            echo "install $file"
+            install -m644 $file "$pkgdir"/$file
+        fi
+    done
+}

@@ -1,0 +1,24 @@
+pkgname="fakegcc"
+pkgver="0.1"
+pkgrev="0"
+maintainer="ky0ko <ky0ko@disroot.org>"
+homepage=""
+desc="shell script wrapper from gcc to clang to fix packages that think gcc is the only compiler"
+license="MIT"
+src="none"
+
+do_install() {
+    mkdir -p "$pkgdir"/usr/bin
+    echo "#!/bin/sh" > "$pkgdir"/usr/bin/gcc
+    echo "clang \$@" >> "$pkgdir"/usr/bin/gcc
+    chmod 755 "$froebelroot"/bin/gcc
+    cp "$froebelroot"/bin/gcc "$froebelroot"/bin/llvm-gcc
+}
+
+do_bootstrap_install() {
+    mkdir -p "$froebelroot"/bin
+    echo "#!/bin/sh" > "$froebelroot"/bin/gcc
+    echo "clang \$@" >> "$froebelroot"/bin/gcc
+    chmod 755 "$froebelroot"/bin/gcc
+    cp "$froebelroot"/bin/gcc "$froebelroot"/bin/llvm-gcc
+}

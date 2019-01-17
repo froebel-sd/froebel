@@ -1,0 +1,29 @@
+pkgname="pigz"
+pkgver="2.4"
+pkgrev="0"
+maintainer="ky0ko <ky0ko@disroot.org>"
+homepage="https://zlib.net/pigz/"
+desc="parallel implementation of gzip"
+license=""
+dependencies="musl zlib"
+src="https://zlib.net/${pkgname}/${pkgname}-${pkgver}.tar.gz"
+
+builddir="$srcdir"/"$pkgname"-"$pkgver"
+
+do_build() {
+    cp froebel.mk "$builddir"/Makefile
+    cd "$builddir"
+    export CFLAGS="$CFLAGS"
+    make
+}
+
+do_install() {
+    cd "$builddir"
+
+    mkdir -p "$pkgdir"/bin
+    install -m755 pigz "$pkgdir"/bin/pigz
+    cd "$pkgdir"/bin
+    ln -s pigz unpigz
+    ln -s pigz gzip
+    ln -s pigz ungzip
+}

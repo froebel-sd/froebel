@@ -1,0 +1,26 @@
+pkgname="zlib"
+pkgver="1.2.11"
+pkgrev="0"
+maintainer="ky0ko <ky0ko@disroot.org>"
+homepage="https://www.zlib.net/"
+desc="free unencumbered compression library"
+license="zlib"
+dependencies="musl compiler-rt"
+src="https://www.zlib.net/zlib-1.2.11.tar.xz"
+
+builddir="$srcdir"/"$pkgname"-"$pkgver"
+
+do_build() {
+    cd "$builddir"
+
+    ./configure \
+        --prefix="/" \
+
+    make
+}
+
+do_install() {
+    cd "$builddir"
+
+    make DESTDIR="$pkgdir" install
+}

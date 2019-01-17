@@ -1,0 +1,33 @@
+pkgname="libcxx-headers"
+_pkgname_major=${pkgname%-*}
+source ../llvm/current_ver
+pkgver="$_llvm_current_ver"
+pkgrev="0"
+maintainer="ky0ko <ky0ko@disroot.org>"
+homepage="https://libcxx.llvm.org/"
+desc="llvm compiler runtime support library"
+license="MIT/UIUC"
+dependencies=""
+src="https://releases.llvm.org/${pkgver}/${_pkgname_major}-${pkgver}.src.tar.xz"
+
+builddir="$srcdir"/"$_pkgname_major"-"$pkgver".src/
+
+do_install() {
+    cd "$builddir"/include
+
+    # libcxx calls some unportable functions musl doesn't have
+    # so, we'll replace them with their portable counterparts
+    sed -i "s/strtoll_l(__a, \&__p2, __base, _LIBCPP_GET_C_LOCALE)/strtoll(__a, \&__p2, __base)/" locale
+    sed -i "s/strtoull_l(__a, \&__p2, __base, _LIBCPP_GET_C_LOCALE)/strtoull(__a, \&__p2, __base)/" locale 
+
+    mkdir -p "$pkgdir"/include/c++/v1
+    for file in **; do 
+        if [ -d $file ]; then
+            echo "make directory $file"
+            mkdir -p "$pkgdir"/include/c++/v1/$file
+        else
+            echo "install $file"
+            install -m644 $file "$pkgdir"/include/c++/v1/$file
+        fi
+    done
+}

@@ -1,0 +1,20 @@
+pkgname="libcxxabi-headers"
+_pkgname_major=${pkgname%-*}
+source ../llvm/current_ver
+pkgver="$_llvm_current_ver"
+pkgrev="0"
+maintainer="ky0ko <ky0ko@disroot.org>"
+homepage="https://libcxxabi.llvm.org/"
+desc="llvm compiler runtime support library"
+license="MIT/UIUC"
+dependencies=""
+src="https://releases.llvm.org/${pkgver}/${_pkgname_major}-${pkgver}.src.tar.xz"
+
+builddir="$srcdir"/"$_pkgname_major"-"$pkgver".src
+
+do_install() {
+    cd "$builddir"
+    mkdir -p "$pkgdir"/include/c++/v1/
+    install -m644 include/cxxabi.h "$pkgdir"/include/cxxabi.h
+    install -m644 include/__cxxabi_config.h "$pkgdir"/include/__cxxabi_config.h
+}

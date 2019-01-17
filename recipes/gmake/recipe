@@ -1,0 +1,34 @@
+pkgname="gmake"
+pkgver="4.2"
+pkgrev="0"
+maintainer="ky0ko <ky0ko@disroot.org>"
+homepage="https://www.gnu.org/software/make/"
+desc=""
+license="GPL3"
+dependencies="musl compiler-rt"
+src="https://ftp.gnu.org/gnu/make/make-${pkgver}.tar.gz"
+
+builddir="$srcdir"/make-"$pkgver"
+
+do_build() {
+    cd "$builddir"
+
+    ./configure \
+        --prefix="" \
+        --host="$HOST_TRIPLE" \
+        --build="$TARGET_TRIPLE" \
+        --target="$TARGET_TRIPLE" \
+        --without-guile \
+
+    make
+}
+
+do_test() {
+
+}
+
+do_install() {
+    cd "$builddir"
+
+    make DESTDIR="$pkgdir" install
+}

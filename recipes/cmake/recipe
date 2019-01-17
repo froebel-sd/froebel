@@ -1,0 +1,33 @@
+### This recipe is used in bootstrap
+pkgname="cmake"
+pkgver="3.11.4"
+_pkgver_nopatch=${pkgver%.*}
+pkgrev="0"
+maintainer="ky0ko <ky0ko@disroot.org>"
+homepage="https://cmake.org/"
+desc="CMake build system"
+license="BSD3"
+src="https://cmake.org/files/v${_pkgver_nopatch}/${pkgname}-${pkgver}.tar.gz"
+
+builddir=$srcdir/build
+
+do_build() {
+    mkdir -p $builddir
+    cd $builddir
+
+    ../${pkgname}-${pkgver}/bootstrap --prefix=/usr
+    make
+}
+
+do_bootstrap_install() {
+    cd $builddir
+
+    ../${pkgname}-${pkgver}/bootstrap --prefix=""
+    make DESTDIR=$froebelroot install
+}
+
+do_install() {
+    cd $builddir
+
+    make DESTDIR=$pkgdir install
+}

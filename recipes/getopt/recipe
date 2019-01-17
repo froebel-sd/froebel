@@ -1,0 +1,24 @@
+pkgname="getopt"
+pkgver="1.1.6"
+pkgrev="0"
+maintainer="ky0ko <ky0ko@disroot.org>"
+homepage="http://frodo.looijaard.name/project/getopt"
+desc="command line option parsing utility"
+dependencies="musl"
+license="GPL2"
+src="http://frodo.looijaard.name/system/files/software/getopt/getopt-1.1.6.tar.gz"
+
+builddir="$srcdir"/"$pkgname"-"$pkgver"
+
+do_build() {
+    cp Makefile "$builddir"/
+    cd "$builddir"
+
+    make
+}
+
+do_install() {
+    cd "$builddir"
+
+    make DESTDIR="$pkgdir" install
+}

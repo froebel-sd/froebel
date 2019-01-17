@@ -1,0 +1,54 @@
+### This recipe is used in bootstrap
+pkgname="clang"
+source ../llvm/current_ver
+pkgver="$_llvm_current_ver"
+pkgrev="0"
+maintainer="ky0ko <ky0ko@disroot.org>"
+homepage="https://llvm.org/"
+desc="LLVM C compiler frontend"
+dependencies="musl compiler-rt libcxxabi libcxx libcxxabi-headers libcxx-headers libunwind llvm zlib ncurses"
+license="UoI-NCSA"
+src="http://releases.llvm.org/${pkgver}/cfe-${pkgver}.src.tar.xz"
+
+builddir="$srcdir"/cfe-"$pkgver".src/build
+
+do_build() {
+    mkdir -p "$builddir"
+    cd "$builddir"
+
+    # clang's cmakelists.txt does not respect us telling it not to use libxml2
+    # so, we patch its check to always be false
+    sed -i "s/set(CLANG_HAVE_LIBXML 1)/set(CLANG_HAVE_LIBXML 0)/" ../CMakeLists.txt
+
+    cmake \
+        -DCMAKE_CROSSCOMPILING="ON" \
+        -DCMAKE_SYSROOT="$FBUILD_SYSROOT" \
+        -DCMAKE_INSTALL_PREFIX="/" \
+        -DCMAKE_BUILD_TYPE=MinSizeRel \
+        -DCMAKE_C_FLAGS_MINSIZEREL_INIT="$CFLAGS -D__CLANG_MAX_ALIGN_T_DEFINED" \
+        -DCMAKE_CXX_FLAGS_MINSIZEREL_INIT="-I$(readlink -f '../lib/Headers') $CXXFLAGS" \
+        -DCMAKE_EXE_LINKER_FLAGS_MINSIZEREL_INIT="$LDFLAGS" \
+        \
+        -DCLANG_VENDOR=froebel \
+        -DCLANG_BUILD_EXAMPLES=OFF \
+        -DCLANG_INCLUDE_TESTS=ON \
+        -DCLANG_DEFAULT_CXX_STDLIB="libc++" \
+        -DCLANG_DEFAULT_LINKER="lld" \
+        -DCLANG_DEFAULT_RTLIB="compiler-rt" \
+        -DCLANG_TABLEGEN="$(which clang-tblgen)" \
+        -DLLVM_ENABLE_TERMINFO="OFF" \
+        -DLLVM_ENABLE_LIBXML2="OFF" \
+        -DLLVM_TARGETS_TO_BUILD="X86" \
+        -DLLVM_LIBDIR_SUFFIX="" \
+        -DCLANG_HAVE_LIBXML="NO" \
+        -DCLANG_INCLUDE_TESTS="NO" \
+        ..
+
+    make
+}
+
+do_install() {
+    cd "$builddir"
+
+    make DESTDIR="$pkgdir" install
+}

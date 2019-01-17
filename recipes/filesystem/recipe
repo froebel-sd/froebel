@@ -1,0 +1,50 @@
+#this is a froebel-specific package
+pkgname="filesystem"
+pkgver="0.1"
+pkgrev="0"
+maintainer="ky0ko <ky0ko@disroot.org>"
+homepage="n/a"
+desc="Froebel base filesystem"
+license="MIT/ISC"
+src="none"
+
+codename="Introduction"
+# Slipgate Complex
+# Castle of the Damned
+# Necropolis
+# Grisly Grotto
+# Ziggurat Vertigo
+# Gloom Keep
+# Door to Chthon
+# House of Chthon
+
+do_install() {
+    olddir=`pwd`
+    cd "$pkgdir"
+    mkdir -p bin
+    mkdir -p dev
+    mkdir -p etc
+    mkdir -p home
+    mkdir -p lib
+    mkdir -p mnt
+    mkdir -p proc
+    mkdir -p root
+    mkdir -p run
+    mkdir -p sbin
+    mkdir -p sys
+    mkdir -p tmp
+    mkdir -p usr
+    mkdir -p var
+    #ln -s lib lib64
+
+    echo "Froebel" > "$pkgdir"/etc/froebel-release
+    echo "NAME=\"Froebel\"" > "$pkgdir"/etc/os-release
+    echo "VERSION=\"$pkgver ($codename)\"" >> "$pkgdir"/etc/os-release
+    echo "ID=\"froebel\"" >> "$pkgdir"/etc/os-release
+    echo "VERSION_ID=\"$pkgver\""
+    echo "PRETTY_NAME=\"Froebel $pkgver ($codename)\""
+    echo "=\"\"" >> "$pkgdir"/etc/os-release
+
+    echo "umask 022" > "$pkgdir"/etc/profile
+    echo "PATH=\"/usr/bin:/bin:/usr/sbin:/sbin\"" >> "$pkgdir"/etc/profile
+}
