@@ -1,0 +1,33 @@
+pkgname="xz"
+pkgver="5.2.4"
+pkgrev="0"
+maintainer="ky0ko <ky0ko@disroot.org>"
+homepage="https://tukaani.org/xz/"
+desc="general purpose compression software using lzma"
+license=""
+dependencies="musl netbsd-csu"
+src="https://versaweb.dl.sourceforge.net/project/lzmautils/xz-${pkgver}.tar.gz"
+
+builddir="$srcdir"/"$pkgname"-"$pkgver"
+
+do_build() {
+    cd "$builddir"
+
+    export LDFLAGS="$LDFLAGS -rtlib=compiler-rt"
+
+    ./configure \
+        --prefix="" \
+        --host="$HOST_TRIPLE" \
+        --build="$TARGET_TRIPLE" \
+        --target="$TARGET_TRIPLE" \
+        --with-sysroot="$FBUILD_SYSROOT" \
+        
+
+    make
+}
+
+do_install() {
+    cd "$builddir"
+
+    make DESTDIR="$pkgdir" install
+}

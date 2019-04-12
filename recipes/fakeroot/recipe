@@ -4,7 +4,7 @@ pkgrev="0"
 maintainer=""
 homepage="https://salsa.debian.org/clint/fakeroot"
 desc="provides a fake root environment for building packages"
-dependencies="linux-headers musl libcap"
+dependencies="linux-headers musl libcap netbsd-csu"
 license=""
 src="http://ftp.debian.org/debian/pool/main/f/${pkgname}/${pkgname}_${pkgver}.orig.tar.xz"
 
@@ -13,9 +13,12 @@ builddir="$srcdir"/"$pkgname"-"$pkgver"
 do_build() {
     cd "$builddir"
 
-    export CFLAGS="$CFLAGS -D_STAT_VER=0 -DSEND_GET_XATTR\(a,b,c\)=send_get_xattr\(a,b\)"
+    export CFLAGS="$CFLAGS -fPIC -D_STAT_VER=0 -DSEND_GET_XATTR\(a,b,c\)=send_get_xattr\(a,b\)"
     export LDFLAGS="-fPIC"
     export LD="ld.lld"
+
+    export SED=sed
+    export GREP=grep
 
     ./configure \
         --prefix="" \

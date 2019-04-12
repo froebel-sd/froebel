@@ -1,7 +1,7 @@
 pkgname="sbase"
 pkgver="2018.07.07"
 pkgrev="0"
-dependencies="compiler-rt musl"
+dependencies="netbsd-csu musl"
 maintainer="ky0ko <ky0ko@disroot.org>"
 homepage="https://core.suckless.org/sbase"
 desc="suckless.org portable base utilities"

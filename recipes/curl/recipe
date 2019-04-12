@@ -5,7 +5,7 @@ maintainer="ky0ko <ky0ko@disroot.org>"
 homepage="https://curl.haxx.se/"
 desc="command line download utility and library"
 license="MIT/x"
-dependencies="musl compiler-rt netbsd-csu linux-headers libressl"
+dependencies="musl netbsd-csu linux-headers libressl"
 src="https://curl.haxx.se/download/curl-7.61.1.tar.xz"
 
 builddir="$srcdir"/"$pkgname"-"$pkgver"

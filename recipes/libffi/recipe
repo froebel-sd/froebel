@@ -1,0 +1,33 @@
+pkgname="libffi"
+pkgver="3.2.1"
+pkgrev="0"
+maintainer="ky0ko <ky0ko@disroot.org>"
+homepage=""
+desc=""
+license=""
+dependencies="musl netbsd-csu"
+src="ftp://sourceware.org/pub/${pkgname}/${pkgname}-${pkgver}.tar.gz"
+
+builddir="$srcdir"/"$pkgname"-"$pkgver"
+
+do_build() {
+	cd "$builddir"
+
+	SED=sed GREP=grep ./configure \
+		--prefix="" \
+		--host="$HOST_TRIPLE" \
+		--build="$TARGET_TRIPLE" \
+		--target="$TARGET_TRIPLE" \
+
+	make
+}
+
+do_test() {
+
+}
+
+do_install() {
+	cd "$builddir"
+
+	make DESTDIR="$pkgdir" install
+}

@@ -1,6 +1,0 @@
-name: filesystem
-version: 0.1-0
-arch: x86_64
-maintainer: ky0ko <ky0ko@disroot.org>
-description:  Froebel base filesystem
-depends: 

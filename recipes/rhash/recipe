@@ -1,0 +1,10 @@
+pkgname="rhash"
+pkgver="1.3.8"
+pkgrev="0"
+maintainer="ky0ko <ky0ko@disroot.org>"
+homepage="http://rhash.sf.net"
+desc="utility and library to compute hash sums"
+license="MIT"
+src="https://github.com/rhash/RHash/archive/v${pkgver}.tar.gz"
+builddir="$srcdir"/RHash-"$pkgver"
+

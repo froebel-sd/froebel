@@ -1,0 +1,31 @@
+pkgname="clang-headers"
+_pkgname_major=${pkgname%-*}
+source ../llvm/current_ver
+pkgver="$_llvm_current_ver"
+pkgrev="0"
+maintainer="ky0ko <ky0ko@disroot.org>"
+homepage="https://clang.llvm.org/"
+desc="clang compiler headers"
+license="MIT/UIUC"
+dependencies=""
+src="https://releases.llvm.org/${pkgver}/cfe-${pkgver}.src.tar.xz"
+
+builddir="$srcdir"/cfe-"$pkgver".src/
+
+do_build() {
+}
+
+do_install() {
+    cd "$builddir"/include
+
+    mkdir -p "$pkgdir"/lib/clang/"$pkgver"/include/
+    for file in **; do 
+        if [ -d $file ]; then
+            echo "make directory $file"
+            mkdir -p "$pkgdir"/lib/clang/"$pkgver"/include/"$file"
+        else
+            echo "install $file"
+            install -m644 "$file" "$pkgdir"/lib/clang/"$pkgver"/"$file"
+        fi
+    done
+}

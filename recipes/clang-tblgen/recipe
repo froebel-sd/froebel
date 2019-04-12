@@ -1,5 +1,5 @@
 ### This recipe is used in bootstrap
-pkgname="clang"
+pkgname="clang-tblgen"
 source ../llvm/current_ver
 pkgver="$_llvm_current_ver"
 pkgrev="0"
@@ -22,12 +22,8 @@ do_build() {
     sed "s/set(CLANG_HAVE_LIBXML 1)/set(CLANG_HAVE_LIBXML 0)/" ../CMakeLists.old > ../CMakeLists.txt
 
     cmake \
-        -DCMAKE_CROSSCOMPILING="ON" \
-        -DCMAKE_SYSROOT="$FBUILD_SYSROOT" \
         -DCMAKE_INSTALL_PREFIX="/" \
         -DCMAKE_BUILD_TYPE=MinSizeRel \
-        -DCMAKE_C_FLAGS_MINSIZEREL_INIT="$CFLAGS -D__CLANG_MAX_ALIGN_T_DEFINED" \
-        -DCMAKE_CXX_FLAGS_MINSIZEREL_INIT="-I$(readlink -f '../lib/Headers') -D__CLANG_MAX_ALIGN_T_DEFINED $CXXFLAGS" \
         -DCMAKE_EXE_LINKER_FLAGS_MINSIZEREL_INIT="$LDFLAGS" \
         \
         -DCLANG_VENDOR=froebel \
@@ -36,7 +32,6 @@ do_build() {
         -DCLANG_DEFAULT_CXX_STDLIB="libc++" \
         -DCLANG_DEFAULT_LINKER="lld" \
         -DCLANG_DEFAULT_RTLIB="compiler-rt" \
-        -DCLANG_TABLEGEN="$(which clang-tblgen)" \
         -DLLVM_ENABLE_TERMINFO="OFF" \
         -DLLVM_ENABLE_LIBXML2="OFF" \
         -DLLVM_TARGETS_TO_BUILD="X86" \
@@ -45,11 +40,12 @@ do_build() {
         -DCLANG_INCLUDE_TESTS="NO" \
         ..
 
-    make
+    make clang-tblgen
 }
 
 do_install() {
     cd "$builddir"
 
-    make DESTDIR="$pkgdir" install
+    mkdir "$pkgdir"/bin
+    cp bin/clang-tblgen "$pkgdir"/bin/clang-tblgen 
 }

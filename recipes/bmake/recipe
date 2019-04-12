@@ -1,0 +1,40 @@
+pkgname="bmake"
+pkgver="20181221"
+pkgrev="0"
+maintainer="ky0ko <ky0ko@disroot.org>"
+homepage="https://www.gnu.org/software/make/"
+desc=""
+license="BSD?"
+dependencies="netbsd-csu musl"
+src="http://www.crufty.net/ftp/pub/sjg/${pkgname}-${pkgver}.tar.gz"
+
+builddir="$srcdir"/"$pkgname"/build
+
+do_build() {
+    mkdir -p "$builddir"
+    cd "$builddir"
+
+    export SED=sed
+    export GREP=grep
+
+    #../configure \
+    #    --prefix="" \
+    #    --host="$HOST_TRIPLE" \
+    #    --build="$TARGET_TRIPLE" \
+    #    --target="$TARGET_TRIPLE" \
+
+    #make -j1
+
+    ../boot-strap 
+}
+
+do_test() {
+
+}
+
+do_install() {
+    cd "$builddir"
+
+    #make DESTDIR="$pkgdir" install
+    ../boot-strap --prefix="" --install-destdir="$pkgdir" op=install
+}

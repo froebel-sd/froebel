@@ -6,7 +6,7 @@ maintainer="ky0ko <ky0ko@disroot.org>"
 homepage="https://libcxx.llvm.org/"
 desc="llvm compiler runtime support library"
 license="MIT/UIUC"
-dependencies="linux-headers musl compiler-rt libcxxabi libunwind"
+dependencies="linux-headers musl netbsd-csu compiler-rt libcxxabi-headers libcxxabi libunwind"
 src="https://releases.llvm.org/${pkgver}/${pkgname}-${pkgver}.src.tar.xz"
 
 builddir="$srcdir"/"$pkgname"-"$pkgver".src/build
@@ -17,8 +17,9 @@ do_build() {
 
     # libcxx calls some unportable functions musl doesn't have
     # so, we'll replace them with their portable counterparts
-    sed -i "s/strtoll_l(__a, \&__p2, __base, _LIBCPP_GET_C_LOCALE)/strtoll(__a, \&__p2, __base)/" ../include/locale
-    sed -i "s/strtoull_l(__a, \&__p2, __base, _LIBCPP_GET_C_LOCALE)/strtoull(__a, \&__p2, __base)/" ../include/locale 
+    cp ../include/locale ../include/locale.old
+    sed "s/strtoll_l(__a, \&__p2, __base, _LIBCPP_GET_C_LOCALE)/strtoll(__a, \&__p2, __base)/" ../include/locale.old |\
+    sed "s/strtoull_l(__a, \&__p2, __base, _LIBCPP_GET_C_LOCALE)/strtoull(__a, \&__p2, __base)/" > ../include/locale
 
     export CXXFLAGS="$CXXFLAGS -nostdlib"
 

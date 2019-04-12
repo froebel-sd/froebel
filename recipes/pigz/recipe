@@ -5,7 +5,7 @@ maintainer="ky0ko <ky0ko@disroot.org>"
 homepage="https://zlib.net/pigz/"
 desc="parallel implementation of gzip"
 license=""
-dependencies="musl zlib"
+dependencies="netbsd-csu musl zlib"
 src="https://zlib.net/${pkgname}/${pkgname}-${pkgver}.tar.gz"
 
 builddir="$srcdir"/"$pkgname"-"$pkgver"

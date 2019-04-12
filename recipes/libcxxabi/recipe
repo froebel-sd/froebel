@@ -6,7 +6,7 @@ maintainer="ky0ko <ky0ko@disroot.org>"
 homepage="https://libcxxabi.llvm.org/"
 desc="llvm compiler runtime support library"
 license="MIT/UIUC"
-dependencies="musl compiler-rt libunwind"
+dependencies="musl netbsd-csu compiler-rt libunwind"
 src="https://releases.llvm.org/${pkgver}/${pkgname}-${pkgver}.src.tar.xz"
 
 builddir="$srcdir"/"$pkgname"-"$pkgver".src/build

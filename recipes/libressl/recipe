@@ -5,7 +5,7 @@ maintainer="ky0ko <ky0ko@disroot.org>"
 homepage="https://www.libressl.org/"
 desc="free, modern, secure ssl/tls encryption library"
 license="Apache1; BSD2; ISC; PD"
-dependencies="musl compiler-rt netbsd-csu linux-headers"
+dependencies="musl  netbsd-csu linux-headers"
 src="https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/${pkgname}-${pkgver}.tar.gz"
 
 builddir="$srcdir"/"$pkgname"-"$pkgver"

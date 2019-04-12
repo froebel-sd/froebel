@@ -5,7 +5,7 @@ maintainer="ky0ko <ky0ko@disroot.org>"
 homepage="http://invisible-island.net/ncurses/"
 desc="terminal ui library"
 license="MIT"
-dependencies="musl compiler-rt libcxxabi-headers libcxxabi libcxx-headers libcxx libunwind"
+dependencies="musl netbsd-csu"
 src="ftp://ftp.invisible-island.net/ncurses/ncurses-6.1.tar.gz"
 
 builddir="$srcdir"/"$pkgname"-"$pkgver"
@@ -20,6 +20,8 @@ do_build() {
         --target="$TARGET_TRIPLE" \
         --with-shared \
         --disable-big-core \
+	 --without-cxx \
+	 --without-cxx-binding \
 
     make   
 }

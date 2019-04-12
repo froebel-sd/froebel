@@ -2,7 +2,7 @@
 pkgname="mksh"
 pkgver="R56c"
 pkgrev="0"
-dependencies="compiler-rt musl"
+dependencies="musl netbsd-csu"
 maintainer="ky0ko <ky0ko@disroot.org>"
 homepage="https://www.mirbsd.org/mksh.htm"
 desc="MirBSD Korn Shell"

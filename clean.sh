@@ -4,8 +4,8 @@ rm -r bin doc hostpkgs packages include lib man share usr build.log .froebel_boo
 cd recipes
 
 for pkg in *; do
-    pushd $pkg
+    cd $pkg
     rm -rf pkg src build.log
     rm -rf froebel_*.tar.gz
-    popd 
+    cd .. 
 done

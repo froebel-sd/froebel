@@ -2,7 +2,7 @@
 
 source common/colors.sh
 source common/log.sh
-source common/build_target.conf
+source common/build_host.conf
 
 if [ -f .froebel_bootstrap ]; then
     export PATH=`pwd`/bin:$PATH
@@ -23,7 +23,7 @@ if [ "x$HOST_TRIPLE" = "x" ]; then
     echo "If this is not correct, please set this in build_target.conf"
 fi
 
-basepkgs="filesystem musl linux-headers libcxxabi-headers libcxx-headers compiler-rt musl mksh sbase ubase libunwind libcxxabi libcxx llvm zlib ncurses clang lld netbsd-csu libressl curl gmake pigz libarchive libcap getopt fakeroot"
+basepkgs="filesystem musl linux-headers netbsd-csu mksh zlib libressl curl libffi clang-headers ncurses python libcxxabi-headers libcxx-headers compiler-rt libunwind libcxxabi libcxx llvm clang lld gmake pigz libarchive libcap getopt fakeroot diffutils bmake cmake perl git"
 
 for pkg in $basepkgs; do
     $fbuild "$pkg"

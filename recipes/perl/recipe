@@ -6,6 +6,7 @@ maintainer="ky0ko <ky0ko@disroot.org>"
 homepage="https://www.perl.org/"
 desc="perl programming language"
 license=""
+dependencies="netbsd-csu musl linux-headers"
 src="https://www.cpan.org/src/${_pkgver_major}.0/${pkgname}-${pkgver}.tar.gz"
 
 builddir="$srcdir"/"$pkgname"-"$pkgver"
@@ -13,8 +14,27 @@ builddir="$srcdir"/"$pkgname"-"$pkgver"
 do_build() {
     cd "$builddir"
 
-    mksh Configure
-    exit 1
+    ./Configure -des \
+		-Dcccdlflags='-fPIC' \
+		-Dcccdlflags='-fPIC' \
+		-Dccdlflags='-rdynamic' \
+		-Dprefix="" \
+		-Dprivlib="/share/perl5/core_perl" \
+		-Darchlib="/lib/perl5/core_perl" \
+		-Dvendorprefix="" \
+		-Dvendorlib=/share/perl5/vendor_perl \
+		-Dvendorarch=/lib/perl5/vendor_perl \
+		-Dsiteprefix="" \
+		-Dsitelib=/share/perl5/site_perl \
+		-Dsitearch=/lib/perl5/site_perl \
+		-Dccflags="$CFLAGS" \
+		-Duselargefiles \
+		-Dusethreads \
+		-Dcf_by='froebel'\
+		-Dusenm \
+		|| return 1
+    
+    make -j1
 }
 
 do_test() {
@@ -22,5 +42,5 @@ do_test() {
 }
 
 do_install() {
-
+    make DESTDIR="$pkgdir" install
 }

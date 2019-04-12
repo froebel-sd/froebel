@@ -5,13 +5,16 @@ maintainer="ky0ko <ky0ko@disroot.org>"
 homepage="http://libarchive.org/"
 desc="library for handling various archive formats"
 license="various"
-dependencies="musl libressl"
+dependencies="netbsd-csu musl libressl"
 src="http://libarchive.org/downloads/${pkgname}-${pkgver}.tar.gz"
 
 builddir="$srcdir"/"$pkgname"-"$pkgver"
 
 do_build() {
     cd "$builddir"
+
+    export SED=sed
+    export GREP=grep
 
     ./configure \
         --prefix="" \

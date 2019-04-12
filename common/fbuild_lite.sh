@@ -46,7 +46,11 @@ do_fetch() {
     filename=`echo $src | sed -e s/.*\\\///`
     if [ ! -f "$srcdir"/"$filename" ]; then
         echo filename is $filename
-        curl "$src" -o "$srcdir"/"$filename"
+	if [ "$(echo $src | grep 'ftp://')" != "" ]; then
+		curl --ftp-method nocwd "$src" -o "$srcdir"/"$filename"
+	else
+		curl -L -k "$src" -o "$srcdir"/"$filename"
+    	fi
     fi
 }
 
@@ -123,16 +127,80 @@ source ../../common/log.sh
 srcdir=`pwd`/src
 pkgdir=`pwd`/pkg
 
+function do_build_confmake() {
+	cd "$builddir"
+
+	confopts_default="--prefix=''"
+	confopts_final=""
+
+	if [ "$no_default_confopts" = "" ]; then
+		confopts_final="$confopts_default $confopts"
+	else
+		confopts_final="$confopts"
+	fi
+	./configure $confopts_final
+
+	make
+}
+
 function do_build() {
-    echo ${c_blue}"##empty build stage"
+    log ${c_blue}"recipe does not define do_build(); using default"
+
+    if [ "$FBUILD_BUILDSYSTEM" = "" ]; then
+	log "detecting build system..."
+	if [ "$builddir" = "" ]; then
+		builddir="$srcdir"/"$pkgname"-"$pkgver"
+		if [ ! -d "$builddir" ]; then
+		    log ${c_red}"error: builddir not set and could not be autodetected!"
+		    log ${c_red}"       please set builddir in the recipe and try again."${c_reset}
+		    exit 1
+	        fi
+		log "no builddir defined, assuming $builddir"
+	fi
+	if [ -f "$builddir"/meson.build ]; then
+		FBUILD_BUILDSYSTEM=meson
+	elif [ -f "$builddir"/CMakeLists.txt ]; then
+		FBUILD_BUILDSYSTEM=cmake
+	elif [ -f "$builddir"/configure ]; then
+		FBUILD_BUILDSYSTEM=confmake
+	elif [ -f "$builddir"/Makefile ]; then
+		FBUILD_BUILDSYSTEM=make
+	elif [ -f "$builddir"/makefile ]; then
+		FBUILD_BUILDSYSTEM=make
+	elif [ -f "$builddir"/autogen.sh ]; then
+		FBUILD_BUILDSYSTEM=autotools
+	else
+		FBUILD_BUILDSYSTEM=unknown
+	fi
+	export FBUILD_BUILDSYSTEM
+	echo "$FBUILD_BUILDSYSTEM build system detected"
+    fi
+    do_build_${FBUILD_BUILDSYSTEM}
 }
 
 function do_test() {
     echo ${c_blue}"##empty test stage"
 }
 
+function do_install_confmake() {
+	cd "$builddir"
+
+	installopts_default="DESTDIR=\"$pkgdir\""
+        installopts_final=""
+
+        if [ "$no_default_installopts" = "" ]; then
+                installopts_final="$installopts_default $installopts"
+        else
+                installopts_final="$installopts"
+        fi
+
+	make $installopts_final install	
+}
+
 function do_install() {
-    echo ${c_blue}"##empty install stage"
+	echo ${c_blue}"no install stage defined, using default for $FBUILD_BUILDSYSTEM"
+
+	do_install_${FBUILD_BUILDSYSTEM}
 }
 
 function do_bootstrap_build() {

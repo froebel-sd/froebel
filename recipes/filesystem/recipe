@@ -18,6 +18,9 @@ codename="Introduction"
 # Door to Chthon
 # House of Chthon
 
+do_build() {
+}
+
 do_install() {
     olddir=`pwd`
     cd "$pkgdir"
