@@ -7,34 +7,9 @@ desc="python programming language"
 license=""
 dependencies="musl netbsd-csu libressl libffi ncurses clang-headers"
 src="https://www.python.org/ftp/python/${pkgver}/Python-${pkgver}.tar.xz"
-
 builddir="$srcdir"/Python-"$pkgver"
+confopts='--enable-shared\
+		--without-gcc\
+		--with-system-ffi'
 
-do_build() {
-	cd "$builddir"
-
-	export CFLAGS="$CFLAGS -I/include/ncurses/ -I/lib/clang/7.0.1/include/"
-	export SED=sed
-	export GREP=grep
-
-	./configure \
-		--prefix="" \
-		--host="$HOST_TRIPLE" \
-		--build="$TARGET_TRIPLE" \
-		--target="$TARGET_TRIPLE" \
-		--enable-shared \
-		--without-gcc \
-		--with-system-ffi \
-
-	make
-}
-
-do_test() {
-
-}
-
-do_install() {
-	cd "$builddir"
-
-	make DESTDIR="$pkgdir" install
-}
+export CFLAGS="$CFLAGS -I/include/ncurses/ -I/lib/clang/7.0.1/include/"

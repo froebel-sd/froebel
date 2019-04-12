@@ -7,27 +7,3 @@ desc="awk implementation"
 license=""
 dependencies="musl netbsd-csu"
 src="ftp://ftp.invisible-island.net/mawk/mawk-1.3.4-20171017.tgz"
-
-builddir="$srcdir"/"$pkgname"-"$pkgver"
-
-do_build() {
-	cd "$builddir"
-
-	./configure \
-		--prefix="" \
-		--host="$HOST_TRIPLE" \
-		--build="$TARGET_TRIPLE" \
-		--target="$TARGET_TRIPLE" \
-
-	make
-}
-
-do_test() {
-
-}
-
-do_install() {
-	cd "$builddir"
-	
-	make DESTDIR="$pkgdir" install
-}

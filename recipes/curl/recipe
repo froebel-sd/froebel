@@ -7,24 +7,3 @@ desc="command line download utility and library"
 license="MIT/x"
 dependencies="musl netbsd-csu linux-headers libressl"
 src="https://curl.haxx.se/download/curl-7.61.1.tar.xz"
-
-builddir="$srcdir"/"$pkgname"-"$pkgver"
-
-do_build() { \
-    cd "$builddir"
-
-    ./configure \
-        --prefix="" \
-        --host="x86_64-linux-gnu" \
-        --build="x86_64-froebel-linux-musl" \
-        --target="x86_64-froebel-linux-musl" \
-
-    make
-}
-
-do_install() {
-    cd "$builddir"
-
-    make DESTDIR="$pkgdir" install
-}
-

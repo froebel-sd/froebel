@@ -7,20 +7,3 @@ desc="free unencumbered compression library"
 license="zlib"
 dependencies="musl netbsd-csu"
 src="https://www.zlib.net/zlib-1.2.11.tar.xz"
-
-builddir="$srcdir"/"$pkgname"-"$pkgver"
-
-do_build() {
-    cd "$builddir"
-
-    ./configure \
-        --prefix="/" \
-
-    make
-}
-
-do_install() {
-    cd "$builddir"
-
-    make DESTDIR="$pkgdir" install
-}

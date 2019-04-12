@@ -130,7 +130,14 @@ pkgdir=`pwd`/pkg
 function do_build_confmake() {
 	cd "$builddir"
 
-	confopts_default="--prefix=''"
+	export SED=sed
+	export GREP=grep
+
+	confopts_default="--prefix='' \
+				--host=$HOST_TRIPLE \
+				--build=$TARGET_TRIPLE \
+				--target=$TARGET_TRIPLE \
+				"
 	confopts_final=""
 
 	if [ "$no_default_confopts" = "" ]; then
@@ -155,6 +162,7 @@ function do_build() {
 		    log ${c_red}"       please set builddir in the recipe and try again."${c_reset}
 		    exit 1
 	        fi
+		export builddir
 		log "no builddir defined, assuming $builddir"
 	fi
 	if [ -f "$builddir"/meson.build ]; then

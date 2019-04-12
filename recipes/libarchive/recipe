@@ -7,27 +7,4 @@ desc="library for handling various archive formats"
 license="various"
 dependencies="netbsd-csu musl libressl"
 src="http://libarchive.org/downloads/${pkgname}-${pkgver}.tar.gz"
-
-builddir="$srcdir"/"$pkgname"-"$pkgver"
-
-do_build() {
-    cd "$builddir"
-
-    export SED=sed
-    export GREP=grep
-
-    ./configure \
-        --prefix="" \
-        --host="$HOST_TRIPLE" \
-        --build="$TARGET_TRIPLE" \
-        --target="$TARGET_TRIPLE" \
-        --without-xml2 \
-
-    make
-}
-
-do_install() {
-    cd "$builddir"
-
-    make DESTDIR="$pkgdir" install    
-}
+confopts='--without-xml2'

@@ -3,24 +3,6 @@ pkgver="1.1.20"
 pkgrev="0"
 maintainer="ky0ko <ky0ko@disroot.org>"
 homepage="https://www.musl-libc.org/"
-desc="Musl C Library"
+desc="musl c library"
 license="MIT"
-src="https://www.musl-libc.org/releases/$pkgname-$pkgver.tar.gz"
-
-builddir="$srcdir"/"$pkgname"-"$pkgver"
-
-do_build() {
-    cd $builddir
-
-    ./configure \
-        --target=$TARGET_ARCH \
-        --prefix="/" \
-
-    make
-}
-
-do_install() {
-    cd $builddir
-
-    make DESTDIR="$pkgdir" install
-}
+src="https://www.musl-libc.org/releases/${pkgname}-${pkgver}.tar.gz"
