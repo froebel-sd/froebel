@@ -7,3 +7,4 @@ desc="command line download utility and library"
 license="MIT/x"
 dependencies="musl netbsd-csu linux-headers libressl"
 src="https://curl.haxx.se/download/curl-7.61.1.tar.xz"
+FBUILD_BUILDSYSTEM=confmake

@@ -8,8 +8,8 @@ license=""
 dependencies="musl netbsd-csu libressl libffi ncurses clang-headers"
 src="https://www.python.org/ftp/python/${pkgver}/Python-${pkgver}.tar.xz"
 builddir="$srcdir"/Python-"$pkgver"
-confopts='--enable-shared\
-		--without-gcc\
+confopts='--enable-shared
+		--without-gcc
 		--with-system-ffi'
 
 export CFLAGS="$CFLAGS -I/include/ncurses/ -I/lib/clang/7.0.1/include/"

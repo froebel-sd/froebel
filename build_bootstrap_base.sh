@@ -23,7 +23,7 @@ if [ "x$HOST_TRIPLE" = "x" ]; then
     echo "If this is not correct, please set this in build_target.conf"
 fi
 
-basepkgs="filesystem musl linux-headers netbsd-csu mksh zlib libressl curl libffi clang-headers ncurses python libcxxabi-headers libcxx-headers compiler-rt libunwind libcxxabi libcxx llvm rhash clang lld gmake pigz libarchive libcap getopt fakeroot diffutils bmake cmake"
+basepkgs="filesystem musl linux-headers netbsd-csu mksh zlib libressl curl libffi clang-headers ncurses python libcxxabi-headers libcxx-headers compiler-rt libunwind libcxxabi libcxx llvm rhash clang lld gmake pigz libarchive libcap getopt fakeroot diffutils bmake cmake git"
 
 for pkg in $basepkgs; do
     $fbuild "$pkg"

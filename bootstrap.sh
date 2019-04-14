@@ -24,3 +24,6 @@ hostpkglist="mksh"
 for pkg in $hostpkglist; do
     "$fbuild" "$pkg"
 done
+
+log ${c_yellow} creating cmake toolchain file${c_reset}
+

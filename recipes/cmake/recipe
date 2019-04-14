@@ -7,39 +7,37 @@ maintainer="ky0ko <ky0ko@disroot.org>"
 homepage="https://cmake.org/"
 desc="CMake build system"
 license="BSD3"
-dependencies="linux-headers netbsd-csu musl libcxxabi-headers libcxxabi libcxx-headers libcxx libunwind libressl"
+dependencies="linux-headers netbsd-csu musl ncurses libcxxabi-headers libcxxabi libcxx-headers libcxx libunwind libressl rhash"
 src="https://cmake.org/files/v${_pkgver_nopatch}/${pkgname}-${pkgver}.tar.gz"
 
-builddir="$srcdir/build"
+#builddir="$srcdir/build"
 
-do_build() {
+do_build_old() {
     mkdir -p "$builddir"
     cd "$builddir"
 
-    export CC="$CC"
-    export CXX="$CXX"
+    #export CC="$CC"
+    #export CXX="$CXX"
 
     # nasty hack because cmake assumes during configuration that any compiler output is an error, apparently
-    export OLDCXXFLAGS="$CXXFLAGS"
-    export CXXFLAGS="$CXXFLAGS -w"
+    #export OLDCXXFLAGS="$CXXFLAGS"
+    #export CXXFLAGS="$CXXFLAGS -w"
 
     # CC="$CC" ../"$pkgname"-"$pkgver"/bootstrap --prefix=""
     # cmake \
-#	-DCMAKE_INSTALL_PREFIX="" \
-#	-DCMAKE_BUILD_TYPE="MinSizeRel" \
-#       -DCMAKE_CXX_FLAGS_MINSIZEREL_INIT="$OLDCXXFLAGS" \
-#	-DCMAKE_EXE_LINKER_FLAGS_MINSIZEREL_INIT="$LDFLAGS" \
-#	../"$pkgname"-"$pkgver"/
+    #	-DCMAKE_INSTALL_PREFIX="" \
+    #	-DCMAKE_BUILD_TYPE="MinSizeRel" \
+    #	../"$pkgname"-"$pkgver"/
+
+
 
     ../"$pkgname"-"$pkgver"/bootstrap \
 	--verbose \
 	--system-libs \
+	--no-system-expat \
+	--no-system-jsoncpp \
+	--no-system-libuv \
 
     make -j8 VERBOSE=1
 }
 
-do_install() {
-    cd $builddir
-
-    make DESTDIR="$pkgdir" install
-}

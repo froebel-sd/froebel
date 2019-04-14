@@ -8,3 +8,4 @@ license="GPL3"
 dependencies="netbsd-csu musl compiler-rt"
 src="https://ftp.gnu.org/gnu/make/make-${pkgver}.tar.gz"
 confopts='--without-guile'
+builddir="$srcdir"/make-"$pkgver"

@@ -1,6 +1,6 @@
 #!/bin/sh
 
-rm -r bin doc hostpkgs packages include lib man share usr build.log .froebel_bootstrap
+rm -r bin doc hostpkgs packages include lib man share usr build.log .froebel_bootstrap .cmake_toolchain
 cd recipes
 
 for pkg in *; do

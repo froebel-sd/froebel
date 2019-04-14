@@ -127,17 +127,24 @@ source ../../common/log.sh
 srcdir=`pwd`/src
 pkgdir=`pwd`/pkg
 
+function do_build_make() {
+	cd "$builddir"
+
+	make $makeopts
+}
+
 function do_build_confmake() {
 	cd "$builddir"
 
 	export SED=sed
 	export GREP=grep
 
-	confopts_default="--prefix='' \
+	confopts_default="--prefix= \
 				--host=$HOST_TRIPLE \
 				--build=$TARGET_TRIPLE \
 				--target=$TARGET_TRIPLE \
 				"
+	log "detecting build system..."
 	confopts_final=""
 
 	if [ "$no_default_confopts" = "" ]; then
@@ -145,16 +152,52 @@ function do_build_confmake() {
 	else
 		confopts_final="$confopts"
 	fi
+	echo $(pwd)
 	./configure $confopts_final
 
+	make $makeopts
+}
+
+function do_build_cmake() {
+	mkdir -p "$builddir"/build
+	cd "$builddir"/build
+
+	rm .toolchain
+	echo "set(CMAKE_SYSTEM_NAME Linux)" >> .toolchain
+	echo "set(CMAKE_SYSROOT $FROEBEL_SYSROOT)" >> .toolchain
+	echo "set(CMAKE_C_COMPILER $CC)" >> .toolchain
+	echo "set(CMAKE_CXX_COMPILER $CXX)" >> .toolchain
+	echo "set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)" >> .toolchain
+	echo "set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)" >> .toolchain
+	echo "set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)" >> .toolchain
+	echo "set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY)" >> .toolchain
+
+	cmakeopts_default="	-DCMAKE_CROSSCOMPILING=ON \
+				-DCMAKE_TOOLCHAIN_FILE=$(pwd)/.toolchain \
+				-DCMAKE_SYSROOT=$FBUILD_SYSROOT \
+				-DCMAKE_INSTALL_PREFIX='' \
+				-DCMAKE_BUILD_TYPE=MinSizeRel \
+				
+				"
+	cmakeopts_final=""
+
+	if [ "$no_default_cmakeopts" = "" ]; then
+		cmakeopts_final="$cmakeopts_default $cmakeopts"
+	else
+		cmakeopts_final="$cmakeopts"
+	fi
+
+	echo "cmakeopts is $cmakeopts_final"
+
+	cmake $cmakeopts_final ../
 	make
 }
+
+
 
 function do_build() {
     log ${c_blue}"recipe does not define do_build(); using default"
 
-    if [ "$FBUILD_BUILDSYSTEM" = "" ]; then
-	log "detecting build system..."
 	if [ "$builddir" = "" ]; then
 		builddir="$srcdir"/"$pkgname"-"$pkgver"
 		if [ ! -d "$builddir" ]; then
@@ -165,6 +208,8 @@ function do_build() {
 		export builddir
 		log "no builddir defined, assuming $builddir"
 	fi
+    if [ "$FBUILD_BUILDSYSTEM" = "" ]; then
+	log "detecting build system..."
 	if [ -f "$builddir"/meson.build ]; then
 		FBUILD_BUILDSYSTEM=meson
 	elif [ -f "$builddir"/CMakeLists.txt ]; then
@@ -193,7 +238,7 @@ function do_test() {
 function do_install_confmake() {
 	cd "$builddir"
 
-	installopts_default="DESTDIR=\"$pkgdir\""
+	installopts_default="DESTDIR=$pkgdir"
         installopts_final=""
 
         if [ "$no_default_installopts" = "" ]; then
@@ -202,7 +247,20 @@ function do_install_confmake() {
                 installopts_final="$installopts"
         fi
 
-	make $installopts_final install	
+	make $makeopts $installopts_final install	
+}
+
+function do_install_cmake() {
+	cd "$builddir"/build
+
+	installopts_default="DESTDIR=$pkgdir"
+	if [ "$no_default_installopts" = "" ]; then
+		installopts_final="$installopts_default $installopts"
+	else
+		installopts_final="$installopts"
+	fi	
+
+	make $installopts_final install
 }
 
 function do_install() {

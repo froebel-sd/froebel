@@ -5,6 +5,6 @@ maintainer="ky0ko <ky0ko@disroot.org>"
 homepage="http://libarchive.org/"
 desc="library for handling various archive formats"
 license="various"
-dependencies="netbsd-csu musl libressl"
+dependencies="netbsd-csu musl libressl zlib"
 src="http://libarchive.org/downloads/${pkgname}-${pkgver}.tar.gz"
-confopts='--without-xml2'
+cmakeopts='-DENABLE_LZMA=OFF -DENABLE_LIBXML2=OFF'
