@@ -16,6 +16,9 @@ if [ ! $? = 0 ]; then
     TAR=$(which tar)
 fi
 
+if [ "$FBUILD_USE_DISTCC" = "yes" ]; then
+	source common/distcc.conf
+fi
 
 check_var_set() {
     var=$1
@@ -162,7 +165,9 @@ function do_build_cmake() {
 	mkdir -p "$builddir"/build
 	cd "$builddir"/build
 
-	rm .toolchain
+	if [ -f .toolchain ]; then
+		rm .toolchain
+	fi
 	echo "set(CMAKE_SYSTEM_NAME Linux)" >> .toolchain
 	echo "set(CMAKE_SYSROOT $FROEBEL_SYSROOT)" >> .toolchain
 	echo "set(CMAKE_C_COMPILER $CC)" >> .toolchain
