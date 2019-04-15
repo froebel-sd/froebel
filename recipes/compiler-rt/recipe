@@ -9,36 +9,11 @@ license="MIT/UIUC"
 dependencies="musl linux-headers netbsd-csu python"
 src="https://releases.llvm.org/${pkgver}/${pkgname}-${pkgver}.src.tar.xz"
 
-builddir="$srcdir"/"$pkgname"-"$pkgver".src/build
+builddir="$srcdir"/"$pkgname"-"$pkgver".src
 
-do_build() {
-    mkdir -p "$builddir"
-    cd "$builddir"
-
-    cmake \
-        -DCMAKE_INSTALL_PREFIX="/" \
-        -DCOMPILER_RT_INSTALL_PATH="$pkgdir"/lib/clang/${pkgver}/ \
-        -DCMAKE_BUILD_TYPE="MinSizeRel" \
-        -DCMAKE_C_COMPILER="$CC" \
-        -DCMAKE_CXX_COMPILER="$CC" \
-        -DCMAKE_C_FLAGS_MINSIZEREL_INIT="$CFLAGS" \
-        -DCMAKE_CXX_FLAGS_MINSIZEREL_INIT="$CXXFLAGS" \
-        -DCMAKE_EXE_LINKER_FLAGS_MINSIZEREL_INIT="$LDFLAGS" \
-        \
-        -DCOMPILER_RT_BUILD_SANITIZERS="OFF" \
-        -DCOMPILER_RT_BUILD_XRAY="OFF" \
-        -DCOMPILER_RT_BUILD_LIBFUZZER="OFF" \
-        -DCOMPILER_RT_USE_BUILTINS_LIBRARY="ON" \
-        ..
-
-    make
-}
-
-do_test() {
-
-}
-
-do_install() {
-    cd "$builddir"
-    make install
-}
+export CXX="$CC"
+cmakeopts="	-DCOMPILER_RT_BUILD_SANITIZERS=OFF \
+		-DCOMPILER_RT_BUILD_XRAY=OFF \
+		-DCOMPILER_RT_BUILD_LIBFUZZER=OFF \
+		-DCOMPILER_RT_USE_BUILTINS_LIBRARY=ON
+		"

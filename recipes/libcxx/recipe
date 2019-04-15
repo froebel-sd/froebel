@@ -8,19 +8,31 @@ desc="llvm compiler runtime support library"
 license="MIT/UIUC"
 dependencies="linux-headers musl netbsd-csu compiler-rt libcxxabi-headers libcxxabi libunwind"
 src="https://releases.llvm.org/${pkgver}/${pkgname}-${pkgver}.src.tar.xz"
+builddir="$srcdir"/"$pkgname"-"$pkgver".src
+export CXX="$CC"
 
-builddir="$srcdir"/"$pkgname"-"$pkgver".src/build
+cmakeopts="	-DLIBCXX_USE_COMPILER_RT=ON \
+        	-DLIBCXX_CXX_ABI=libcxxabi \
+        	-DLIBCXXABI_USE_LLVM_UNWINDER=ON \
+        	-DLIBCXX_SYSROOT=$FROEBEL_SYSROOT \
+        	-DLIBCXX_HAS_MUSL_LIBC=ON \
+        	-DLIBCXX_INSTALL_LIBRARY=ON \
+        	-DLIBCXX_INSTALL_HEADERS=OFF \
+		"
 
-do_build() {
-    mkdir -p "$builddir"
-    cd "$builddir"
-
+do_prepare() {
+	echo "prepare has been called!!!"
+	cd "$builddir"
     # libcxx calls some unportable functions musl doesn't have
     # so, we'll replace them with their portable counterparts
-    cp ../include/locale ../include/locale.old
-    sed "s/strtoll_l(__a, \&__p2, __base, _LIBCPP_GET_C_LOCALE)/strtoll(__a, \&__p2, __base)/" ../include/locale.old |\
-    sed "s/strtoull_l(__a, \&__p2, __base, _LIBCPP_GET_C_LOCALE)/strtoull(__a, \&__p2, __base)/" > ../include/locale
+    cp include/locale include/locale.old
+    sed "s/strtoll_l(__a, \&__p2, __base, _LIBCPP_GET_C_LOCALE)/strtoll(__a, \&__p2, __base)/" include/locale.old |\
+    sed "s/strtoull_l(__a, \&__p2, __base, _LIBCPP_GET_C_LOCALE)/strtoull(__a, \&__p2, __base)/" > include/locale
+}
 
+do_build_old() {
+    cd "$builddir"/build
+ 
     export CXXFLAGS="$CXXFLAGS -nostdlib"
 
     cmake \
@@ -44,11 +56,7 @@ do_build() {
     make
 }
 
-do_test() {
-
-}
-
 do_install() {
-    cd "$builddir"
+    cd "$builddir"/build
     make DESTDIR="$pkgdir" install
 }

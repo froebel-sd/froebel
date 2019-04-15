@@ -130,6 +130,10 @@ source ../../common/log.sh
 srcdir=`pwd`/src
 pkgdir=`pwd`/pkg
 
+function do_prepare() {
+	
+}
+
 function do_build_make() {
 	cd "$builddir"
 
@@ -192,7 +196,7 @@ function do_build_cmake() {
 		cmakeopts_final="$cmakeopts"
 	fi
 
-	echo "cmakeopts is $cmakeopts_final"
+	echo "cmakeopts_final is $cmakeopts_final"
 
 	cmake $cmakeopts_final ../
 	make
@@ -366,6 +370,7 @@ trap "echo \"${c_red}failure while building package! exiting${c_reset}\n\"; do_c
 #do_fetch
 do_step fetch 
 do_step unpack
+do_step prepare
 if [ "$FBUILD_BOOTSTRAP" == "yes" ]; then
     do_step bootstrap_build 
     do_step bootstrap_test

@@ -9,9 +9,23 @@ license="MIT/UIUC"
 dependencies="netbsd-csu musl compiler-rt libcxxabi libcxx libcxxabi-headers libcxx-headers libunwind"
 src="https://releases.llvm.org/${pkgver}/${pkgname}-${pkgver}.src.tar.xz"
 
-builddir="$srcdir"/"$pkgname"-"$pkgver".src/build
+builddir="$srcdir"/"$pkgname"-"$pkgver".src
 
-do_build() {
+cmakeopts="\
+        -DLLVM_TABLEGEN="$(which llvm-tblgen)" \
+        -DLLVM_DEFAULT_TARGET_TRIPLE="$TARGET_TRIPLE" \
+        -DLLVM_TARGET_ARCH="$TARGET_ARCH" \
+        -DLLVM_ENABLE_LIBCXX="ON" \
+        -DLLVM_ENABLE_LLD="ON" \
+        -DLLVM_ENABLE_LIBXML2="OFF" \
+        -DLLVM_ENABLE_OCAMLDOC="OFF" \
+        -DLLVM_ENABLE_BINDINGS="OFF" \
+        -DLLVM_ENABLE_TERMINFO="OFF" \
+        -DLLVM_INSTALL_BINUTILS_SYMLINKS="ON" \
+        -DLLVM_TARGETS_TO_BUILD="X86" \
+	"
+
+do_build_old() {
     mkdir -p "$builddir"
     cd "$builddir"
 
@@ -40,13 +54,4 @@ do_build() {
         ..
 
     make
-}
-
-do_test() {
-
-}
-
-do_install() {
-    cd "$builddir"
-    make DESTDIR="$pkgdir" install
 }

@@ -8,10 +8,13 @@ desc="llvm compiler runtime support library"
 license="MIT/UIUC"
 dependencies="musl netbsd-csu compiler-rt libcxxabi-headers libcxx-headers"
 src="https://releases.llvm.org/${pkgver}/${pkgname}-${pkgver}.src.tar.xz"
+builddir="$srcdir"/"$pkgname"-"$pkgver".src
 
-builddir="$srcdir"/"$pkgname"-"$pkgver".src/build
+cmakeopts="	-DLLVM_ENABLE_LIBCXX=ON \
+		-DLIBUNWIND_USE_COMPILER_RT=ON \	
+		"
 
-do_build() {
+do_build_old() {
     mkdir -p "$builddir"
     cd "$builddir"
 
@@ -39,7 +42,7 @@ do_test() {
 }
 
 do_install() {
-    cd "$builddir"/
+    cd "$builddir"/build
     make DESTDIR="$pkgdir" install
 
     cd ..
