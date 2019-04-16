@@ -30,33 +30,3 @@ do_prepare() {
     sed "s/strtoull_l(__a, \&__p2, __base, _LIBCPP_GET_C_LOCALE)/strtoull(__a, \&__p2, __base)/" > include/locale
 }
 
-do_build_old() {
-    cd "$builddir"/build
- 
-    export CXXFLAGS="$CXXFLAGS -nostdlib"
-
-    cmake \
-        -DCMAKE_INSTALL_PREFIX="/" \
-        -DCMAKE_BUILD_TYPE="MinSizeRel" \
-        -DCMAKE_C_COMPILER="$CC" \
-        -DCMAKE_CXX_COMPILER="$CXX" \
-        -DCMAKE_C_FLAGS_MINSIZEREL_INIT="$CFLAGS" \
-        -DCMAKE_CXX_FLAGS_MINSIZEREL_INIT="$CXXFLAGS -v" \
-        -DCMAKE_EXE_LINKER_FLAGS_MINSIZEREL_INIT="$LDFLAGS" \
-        \
-        -DLIBCXX_USE_COMPILER_RT="ON" \
-        -DLIBCXX_CXX_ABI="libcxxabi" \
-        -DLIBCXXABI_USE_LLVM_UNWINDER="ON" \
-        -DLIBCXX_SYSROOT="$FROEBEL_SYSROOT" \
-        -DLIBCXX_HAS_MUSL_LIBC="ON" \
-        -DLIBCXX_INSTALL_LIBRARY="ON" \
-        -DLIBCXX_INSTALL_HEADERS="OFF" \
-        ..
-
-    make
-}
-
-do_install() {
-    cd "$builddir"/build
-    make DESTDIR="$pkgdir" install
-}

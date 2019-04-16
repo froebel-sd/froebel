@@ -5,13 +5,15 @@ maintainer="ky0ko <ky0ko@disroot.org>"
 homepage="https://ninja-build.org/"
 desc="a small build system with a focus on speed"
 license="apache2"
+dependencies="linux-headers netbsd-csu musl compiler-rt libcxxabi-headers libcxxabi libcxx-headers libcxx"
 src="https://github.com/ninja-build/ninja/archive/v1.9.0.tar.gz"
+builddir="$srcdir"/"$pkgname"-"$pkgver"
 
 do_build() {
 	cd "$builddir"
 
-	./configure.py --bootstrap
+	python configure.py --bootstrap
 }
 do_install() {
-
+	exit 1
 }

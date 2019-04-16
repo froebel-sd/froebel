@@ -11,8 +11,16 @@ src="https://www.cpan.org/src/${_pkgver_major}.0/${pkgname}-${pkgver}.tar.gz"
 
 builddir="$srcdir"/"$pkgname"-"$pkgver"
 
+CFLAGS="-D_LARGEFILE64_SOURCE $CFLAGS"
+
 do_build() {
     cd "$builddir"
+
+    # perl assumes /usr/include exists and has errno.h in it.
+    # so, we'll make it, for the build.
+
+    mkdir -p "$FBUILD_SYSROOT"/usr/include
+    ln -s "$FBUILD_SYSROOT"/include/errno.h "$FBUILD_SYSROOT"/usr/include/errno.h    
 
     ./Configure -des \
 		-Dcccdlflags='-fPIC' \
@@ -28,13 +36,13 @@ do_build() {
 		-Dsitelib=/share/perl5/site_perl \
 		-Dsitearch=/lib/perl5/site_perl \
 		-Dccflags="$CFLAGS" \
-		-Duselargefiles \
 		-Dusethreads \
+		-Duseshrplib \
 		-Dcf_by='froebel'\
 		-Dusenm \
 		|| return 1
     
-    make -j1
+    make -j8 || make -j8 || make -j8
 }
 
 do_test() {

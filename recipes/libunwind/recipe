@@ -14,32 +14,7 @@ cmakeopts="	-DLLVM_ENABLE_LIBCXX=ON \
 		-DLIBUNWIND_USE_COMPILER_RT=ON \	
 		"
 
-do_build_old() {
-    mkdir -p "$builddir"
-    cd "$builddir"
-
-    export CXXFLAGS="$CXXFLAGS -nostdlib"
-
-    cmake \
-        -DCMAKE_INSTALL_PREFIX="/" \
-        -DCMAKE_BUILD_TYPE="MinSizeRel" \
-        -DCMAKE_C_COMPILER="$CC" \
-        -DCMAKE_CXX_COMPILER="$CXX" \
-        -DCMAKE_C_FLAGS_MINSIZEREL_INIT="$CFLAGS -v" \
-        -DCMAKE_CXX_FLAGS_MINSIZEREL_INIT="$CXXFLAGS -v" \
-        -DCMAKE_EXE_LINKER_FLAGS_MINSIZEREL_INIT="$LDFLAGS -v" \
-        \
-        -DLLVM_ENABLE_LIBCXX=ON \
-        \
-        -DLIBUNWIND_USE_COMPILER_RT=ON \
-        ..
-
-    make
-}
-
-do_test() {
-
-}
+export CXX="$CC"
 
 do_install() {
     cd "$builddir"/build
