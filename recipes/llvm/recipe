@@ -22,5 +22,5 @@ cmakeopts="\
         -DLLVM_ENABLE_BINDINGS="OFF" \
         -DLLVM_ENABLE_TERMINFO="OFF" \
         -DLLVM_INSTALL_BINUTILS_SYMLINKS="ON" \
-        -DLLVM_TARGETS_TO_BUILD="X86" \
+        -DLLVM_TARGETS_TO_BUILD="all" \
 	"

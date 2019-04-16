@@ -39,7 +39,7 @@ do_build() {
         -DCLANG_TABLEGEN="$(which clang-tblgen)" \
         -DLLVM_ENABLE_TERMINFO="OFF" \
         -DLLVM_ENABLE_LIBXML2="OFF" \
-        -DLLVM_TARGETS_TO_BUILD="X86" \
+        -DLLVM_TARGETS_TO_BUILD="all" \
         -DLLVM_LIBDIR_SUFFIX="" \
         -DCLANG_HAVE_LIBXML="NO" \
         -DCLANG_INCLUDE_TESTS="NO" \
