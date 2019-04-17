@@ -9,11 +9,6 @@ dependencies="linux-headers netbsd-csu musl compiler-rt libcxxabi-headers libcxx
 src="https://github.com/ninja-build/ninja/archive/v1.9.0.tar.gz"
 builddir="$srcdir"/"$pkgname"-"$pkgver"
 
-do_prepare() {
-	printf "218i\n#elif defined(st_mtime)\nreturn (int64_t)st.st_mtim.tv_sec * 1000000000LL + st.st_mtim.tv_nsec;\n.\nw\nq\n" | ed src/disk_interface.cc
-
-	printf "23c\nod -t x1 -A n -v | sed -e 's|^[\t ]\{0,\}$||g; s|[\t ]\{1,\}| |g; s| \{1,\}$||g; s| |\\x|g; s|^|"|; s|$|"|'\n.\nw\nq\n" | ed src/inline/sh
-}
 
 do_build() {
 	cd "$builddir"
@@ -23,3 +18,12 @@ do_build() {
 do_install() {
 	exit 1
 }
+
+do_prepare() {
+	printf "218i\n#elif defined(st_mtime)\nreturn (int64_t)st.st_mtim.tv_sec * 1000000000LL + st.st_mtim.tv_nsec;\n.\nw\nq\n" | ed src/disk_interface.cc
+
+	printf "23c\nod -t x1 -A n -v | sed -e 's|^[\t ]\{0,\}$||g; s|[\t ]\{1,\}| |g; s| \{1,\}$||g; s| |\\x|g; s|^|"|; s|$|"|'\n.\nw\nq\n" | ed src/inline.sh
+}
+
+
+
