@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env mksh
 
 source common/colors.sh
 source common/log.sh
@@ -10,7 +10,6 @@ if [ -f .froebel_bootstrap ]; then
     export FBUILD_BOOTSTRAP=no
     export FBUILD_REPO=`pwd`/packages
     export froebelroot=`pwd`
-    export TARGET_ARCH=`uname -m`
     fbuild="mksh $froebelroot/common/fbuild_lite.sh"
 fi
 

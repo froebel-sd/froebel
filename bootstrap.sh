@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env mksh
 
 touch .froebel_bootstrap
 

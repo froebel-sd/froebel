@@ -1,6 +1,6 @@
 ### This recipe is used in bootstrap
 pkgname="mksh"
-pkgver="R56c"
+pkgver="R57"
 pkgrev="0"
 dependencies="musl netbsd-csu"
 maintainer="ky0ko <ky0ko@disroot.org>"

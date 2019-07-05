@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env mksh
 
 cmdline="$0 $@"
 

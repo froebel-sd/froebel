@@ -18,11 +18,15 @@ do_build() {
         x32) arch=amd64;;
     esac
 
+
+    export arch    
+    export CSU_MACHINE_ARCH="$arch"
+    export CSU_MACHINE_CPU="$arch"
     export MKPIC="yes"
     export MKSTRIPIDENT="no"
 
     ln -s "$builddir"/sys/arch/"$arch"/include common/machine
-    bmake crtbegin.o crtbeginS.o crtend.o
+    bmake CC="clang $CFLAGS" CSU_MACHINE_ARCH="$TARGET_ARCH" CSU_MACHINE_CPU="$TARGET_ARCH" crtbegin.o crtbeginS.o crtend.o
 }
 
 do_test() {
