@@ -19,7 +19,14 @@ fbuild="./common/fbuild_lite.sh"
 log ${c_yellow}\#\# Froebel Bootstrap${c_reset}
 log run by `whoami`@`hostname` on `uname -s -m -r` at `date`
 
-hostpkglist="mksh"
+hostpkglist=""
+
+if [ "$(which mksh)" == "" ]; then
+	hostpkglist+="mksh"
+fi
+if [ "$(which python)" == "" ]; then
+	hostpkglist+="python"
+fi
 
 for pkg in $hostpkglist; do
     "$fbuild" "$pkg"

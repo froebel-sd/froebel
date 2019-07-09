@@ -6,7 +6,7 @@ maintainer="ky0ko <ky0ko@disroot.org>"
 homepage="https://libcxxabi.llvm.org/"
 desc="llvm compiler runtime support library"
 license="MIT/UIUC"
-dependencies="musl netbsd-csu compiler-rt libunwind"
+dependencies="musl netbsd-csu compiler-rt libunwind libcxx-headers"
 src="https://releases.llvm.org/${pkgver}/${pkgname}-${pkgver}.src.tar.xz"
 
 builddir="$srcdir"/"$pkgname"-"$pkgver".src/build
@@ -31,6 +31,7 @@ do_build() {
         -DLIBCXXABI_USE_COMPILER_RT="ON" \
         -DLIBCXXABI_USE_LLVM_UNWINDER="ON" \
         -DLIBCXXABI_SYSROOT="$FROEBEL_SYSROOT" \
+	-DLIBCXXABI_LIBCXX_INCLUDES="$FROEBEL_SYSROOT"/include/c++/v1 \
         ..
 
     make

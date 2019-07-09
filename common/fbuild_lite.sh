@@ -303,7 +303,7 @@ function do_prepare_tmproot() {
 
     mkdir -p $tmproot
 
-    for pkg in $dependencies; do
+    for pkg in $dependencies $builddeps; do
         for localpkg in "$FBUILD_REPO"/"$pkg"_*.pkg; do
             log "installing $pkg to tmproot"
             #opkg -o $tmproot -V0 install $localpkg
@@ -344,6 +344,27 @@ function do_step() {
     do_$1
     export fbuild_"$1"="done"
     cd $prev
+}
+
+function hostdep() {
+	log $c_blue"testing for dependency "$c_white"$1"$c_reset
+	which $1
+	if [ "$?" == "1" ]; then
+		log $c_red"not found, attempting to install"
+		if [ "$2" == "" ]; then
+			deppkg="$1"
+		else
+			deppkg_"$2"
+		fi
+		mkdir $tmproot/hostbin
+		$TAR -xzf $localpkg -C $tmproot/hostbin
+		PATH="${PATH}:$tmproot/hostbin"
+		which $1
+		if [ "$?" == "1" ]; then
+			log $c_red"failure installing dependency $1"
+			exit 1
+		fi
+	fi
 }
 
 source ./recipe
