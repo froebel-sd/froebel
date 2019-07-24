@@ -1,0 +1,20 @@
+pkgname="busybox"
+pkgver="1.31.0"
+pkgrev="0"
+maintainer="ky0ko <ky0ko@disroot.org>"
+homepage="https://www.busybox.net/"
+desc="swiss army knife with most core utilities"
+license="GPLv2"
+src="https://www.busybox.net/downloads/${pkgname}-${pkgver}.tar.bz2"
+makeopts="CC=$CC AR=$AR"
+dependencies="netbsd-csu musl linux-headers"
+
+do_prepare() {
+	cp busybox.config src/busybox-${pkgver}/.config
+}
+
+do_install() {
+	cd "$builddir"
+	make install
+	cp -r _install/* "$pkgdir"/
+}

@@ -1,0 +1,10 @@
+pkgname="strace"
+pkgver="5.2"
+pkgrev="0"
+maintainer="ky0ko <ky0ko@disroot.org>"
+homepage="https://strace.io/"
+desc=""
+license=""
+builddeps="netbsd-csu musl linux-headers"
+src="https://strace.io/files/5.2/${pkgname}-${pkgver}.tar.xz"
+

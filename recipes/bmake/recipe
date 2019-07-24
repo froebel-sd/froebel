@@ -24,8 +24,9 @@ do_build() {
     #    --target="$TARGET_TRIPLE" \
 
     #make -j1
+    LDFLAGS="$LDFLAGS -static"
 
-    ../boot-strap 
+    ../boot-strap --prefix="" 
 }
 
 do_test() {

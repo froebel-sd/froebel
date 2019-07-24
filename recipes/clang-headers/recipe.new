@@ -1,31 +1,14 @@
 ### This recipe is used in bootstrap
-pkgname="clang"
+pkgname="clang-headers"
 source ../llvm/current_ver
 pkgver="$_llvm_current_ver"
 pkgrev="0"
 maintainer="ky0ko <ky0ko@disroot.org>"
 homepage="https://llvm.org/"
 desc="LLVM C compiler frontend"
-dependencies="musl compiler-rt libcxxabi libcxx libcxxabi-headers libcxx-headers clang-headers libunwind llvm zlib ncurses"
-builddeps="netbsd-csu"
+builddeps="netbsd-csu musl compiler-rt libcxxabi libcxx libcxxabi-headers libcxx-headers libunwind llvm zlib ncurses"
 license="UoI-NCSA"
 src="http://releases.llvm.org/${pkgver}/cfe-${pkgver}.src.tar.xz"
-cmakeopts="
-	-DCLANG_VENDOR=froebel \
-        -DCLANG_BUILD_EXAMPLES=OFF \
-        -DCLANG_INCLUDE_TESTS=ON \
-        -DCLANG_DEFAULT_CXX_STDLIB="libc++" \
-        -DCLANG_DEFAULT_LINKER="lld" \
-        -DCLANG_DEFAULT_RTLIB="compiler-rt" \
-        -DCLANG_TABLEGEN="$(which clang-tblgen)" \
-        -DLLVM_ENABLE_TERMINFO="OFF" \
-        -DLLVM_ENABLE_LIBXML2="OFF" \
-        -DLLVM_TARGETS_TO_BUILD="all" \
-        -DLLVM_LIBDIR_SUFFIX="" \
-        -DCLANG_HAVE_LIBXML="NO" \
-        -DCLANG_INCLUDE_TESTS="NO" \
-	"
-
 builddir="$srcdir"/cfe-"$pkgver".src
 
 do_prepare() {
@@ -35,14 +18,6 @@ do_prepare() {
 }
 
 do_build_old() {
-    mkdir -p "$builddir"
-    cd "$builddir"
-
-    # clang's cmakelists.txt does not respect us telling it not to use libxml2
-    # so, we patch its check to always be false
-    cp ../CMakeLists.txt ../CMakeLists.old
-    sed "s/set(CLANG_HAVE_LIBXML 1)/set(CLANG_HAVE_LIBXML 0)/" ../CMakeLists.old > ../CMakeLists.txt
-
     cmake \
         -DCMAKE_CROSSCOMPILING="ON" \
         -DCMAKE_SYSROOT="$FBUILD_SYSROOT" \
@@ -66,6 +41,10 @@ do_build_old() {
         -DCLANG_HAVE_LIBXML="NO" \
         -DCLANG_INCLUDE_TESTS="NO" \
         ..
+}
 
-    make
+do_install() {
+    cd "$builddir"
+
+    make DESTDIR="$pkgdir" install-clang-headers
 }

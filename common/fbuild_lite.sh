@@ -97,7 +97,6 @@ do_package() {
     for d in $dependencies; do
         echo "      \"$d\"," >> $pkgdir/META/meta
     done
-    #echo "      depends = \"$dependencies" >> $pkgdir/META/meta
     echo "  }" >> $pkgdir/META/meta
     echo "}" >> $pkgdir/META/meta
     
@@ -162,7 +161,7 @@ function do_build_confmake() {
 	echo $(pwd)
 	./configure $confopts_final
 
-	make $makeopts
+	make CFLAGS="$CFLAGS" LDFLAGS="$LDFLAGS" LD="$LD" $makeopts
 }
 
 function do_build_cmake() {
@@ -173,7 +172,7 @@ function do_build_cmake() {
 		rm .toolchain
 	fi
 	echo "set(CMAKE_SYSTEM_NAME Linux)" >> .toolchain
-	echo "set(CMAKE_SYSROOT $FROEBEL_SYSROOT)" >> .toolchain
+	echo "set(CMAKE_SYSROOT $FBUILD_SYSROOT)" >> .toolchain
 	echo "set(CMAKE_C_COMPILER $CC)" >> .toolchain
 	echo "set(CMAKE_CXX_COMPILER $CXX)" >> .toolchain
 	echo "set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)" >> .toolchain
@@ -186,7 +185,6 @@ function do_build_cmake() {
 				-DCMAKE_SYSROOT=$FBUILD_SYSROOT \
 				-DCMAKE_INSTALL_PREFIX='' \
 				-DCMAKE_BUILD_TYPE=MinSizeRel \
-				
 				"
 	cmakeopts_final=""
 
@@ -199,7 +197,7 @@ function do_build_cmake() {
 	echo "cmakeopts_final is $cmakeopts_final"
 
 	cmake $cmakeopts_final ../
-	make
+	make VERBOSE=1
 }
 
 
@@ -295,6 +293,9 @@ function do_bootstrap_prepackage() {
 }
 
 function do_prepare_tmproot() {
+    if [ "$FBUILD_NO_TMPROOT" != "" ]; then
+	return
+    fi
     export tmproot="/tmp/fbuild-tmproot-`whoami`-$pkgname"
 
     if [ -d $tmproot ]; then
@@ -312,8 +313,8 @@ function do_prepare_tmproot() {
     done
 
     export FBUILD_SYSROOT="$tmproot"
-    export CFLAGS="$CFLAGS --sysroot=$tmproot -isystem$tmproot/include"
-    export CXXFLAGS="$CXXFLAGS --sysroot=$tmproot -isystem$tmproot/include/c++/v1 -isystem$tmproot/include"
+    export CFLAGS="$CFLAGS --sysroot=$tmproot -isystem$tmproot/include -isystem$tmproot/lib/clang/8.0.0/include"
+    export CXXFLAGS="$CXXFLAGS --sysroot=$tmproot -isystem$tmproot/include/c++/v1 -isystem$tmproot/include -isystem$tmproot/lib/clang/8.0.0/include"
     export LDFLAGS="$LDFLAGS --sysroot=$tmproot -L$tmproot/lib"
 }
 

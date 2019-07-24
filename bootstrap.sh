@@ -27,6 +27,15 @@ fi
 if [ "$(which python)" == "" ]; then
 	hostpkglist+="python"
 fi
+if [ "$(which clang-tblgen)" == "" ]; then
+	hostpkglist+="clang-tblgen"
+fi
+if [ "$(which perl)" == "" ]; then
+	hostpkglist+="perl"
+fi
+if [ "$(which git)" == "" ]; then
+	hostpkglist+="git"
+fi
 
 for pkg in $hostpkglist; do
     "$fbuild" "$pkg"

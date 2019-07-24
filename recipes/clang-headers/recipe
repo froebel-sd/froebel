@@ -16,16 +16,16 @@ do_build() {
 }
 
 do_install() {
-    cd "$builddir"/include
+    cd "$builddir"/lib/Headers
 
-    mkdir -p "$pkgdir"/lib/clang/"$pkgver"/include/
+    mkdir -p "$pkgdir"/lib/clang/${pkgver}/include
     for file in **; do 
         if [ -d $file ]; then
             echo "make directory $file"
-            mkdir -p "$pkgdir"/lib/clang/"$pkgver"/include/"$file"
+            mkdir -p "$pkgdir"/lib/clang/${pkgver}/include/"$file"
         else
             echo "install $file"
-            install -m644 "$file" "$pkgdir"/lib/clang/"$pkgver"/"$file"
+            install -m644 "$file" "$pkgdir"/lib/clang/${pkgver}/include/"$file"
         fi
     done
 }

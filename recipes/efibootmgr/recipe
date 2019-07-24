@@ -1,0 +1,9 @@
+pkgname="efibootmgr"
+pkgver="16"
+pkgrev="0"
+maintainer="ky0ko <ky0ko@disroot.org>"
+homepage="https://github.com/rhboot/efibootmgr"
+desc="utility to manage efi boot entries"
+license="GPLv2"
+src="https://github.com/rhboot/efibootmgr/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.bz2"
+export EFIDIR=/boot/efi

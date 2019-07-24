@@ -16,12 +16,6 @@ CFLAGS="-D_LARGEFILE64_SOURCE $CFLAGS"
 do_build() {
     cd "$builddir"
 
-    # perl assumes /usr/include exists and has errno.h in it.
-    # so, we'll make it, for the build.
-
-    mkdir -p "$FBUILD_SYSROOT"/usr/include
-    ln -s "$FBUILD_SYSROOT"/include/errno.h "$FBUILD_SYSROOT"/usr/include/errno.h    
-
     ./Configure -des \
 		-Dcccdlflags='-fPIC' \
 		-Dcccdlflags='-fPIC' \
@@ -40,9 +34,11 @@ do_build() {
 		-Duseshrplib \
 		-Dcf_by='froebel'\
 		-Dusenm \
+		-Dman1dir=none \
+		-Dman3dir=none \
 		|| return 1
     
-    make -j8 || make -j8 || make -j8
+    make -j1 || make -j1 || make -j1
 }
 
 do_test() {
@@ -50,5 +46,6 @@ do_test() {
 }
 
 do_install() {
+    cd "$builddir"
     make DESTDIR="$pkgdir" install
 }

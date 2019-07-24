@@ -9,4 +9,4 @@ src="https://github.com/rhash/RHash/archive/v${pkgver}.tar.gz"
 builddir="$srcdir"/RHash-"$pkgver"
 confopts="--prefix=/ --target=$FBUILD_TARGET --enable-lib-static --enable-lib-shared"
 no_default_confopts=1
-
+dependencies="netbsd-csu musl"
