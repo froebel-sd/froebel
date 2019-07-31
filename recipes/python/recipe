@@ -12,4 +12,4 @@ confopts='--enable-shared
 		--without-gcc
 		--with-system-ffi'
 
-export CFLAGS="$CFLAGS -I/include/ncurses/ -I/lib/clang/7.0.1/include/"
+export CFLAGS="$CFLAGS -I/include/ncurses/ -I/lib/clang/8.0.0/include/"
