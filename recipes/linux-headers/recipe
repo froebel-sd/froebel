@@ -14,7 +14,13 @@ do_build() {
 
 do_install() {
     cd $builddir
-    make headers_install ARCH="$TARGET_ARCH" INSTALL_HDR_PATH="$pkgdir"/
+
+    case $TARGET_ARCH in
+	aarch64) arch=arm64;;
+	*)	arch=$TARGET_ARCH;
+    esac
+
+    make headers_install ARCH="$arch" INSTALL_HDR_PATH="$pkgdir"/
     # linux sysinfo.h is broken and doesn't work with musl, which provides a replacement
     # so, we'll remove it, and replace it with a symlink to musl's
     rm "$pkgdir"/include/linux/sysinfo.h
