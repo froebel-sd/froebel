@@ -1,5 +1,5 @@
 pkgname="python"
-pkgver="2.7.13"
+pkgver="3.7.4"
 pkgrev="0"
 maintainer="ky0ko <ky0ko@disroot.org>"
 homepage="https://www.python.org/"

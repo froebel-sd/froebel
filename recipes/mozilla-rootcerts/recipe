@@ -1,0 +1,20 @@
+pkgname="mozilla-rootcerts"
+pkgver="20190730"
+pkgrev="0"
+maintainer="ky0ko <ky0ko@disroot.org>"
+homepage="https://www.mozilla.org/en-US/about/governance/policies/security-group/certs/"
+desc="mozilla root certificate store"
+license="MPL2"
+gitrev="3709f100f2649fc571f15d142fb29c61010861b3"
+src="https://hg.mozilla.org/mozilla-central/archive/${gitrev}.tar.gz"
+
+builddir="$srcdir"/mozilla-central-"$gitrev"
+
+do_build() {
+	cd "$builddir"
+	./mach build
+}
+
+do_install() {
+	exit 1 
+}

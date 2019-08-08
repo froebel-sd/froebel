@@ -36,6 +36,9 @@ fi
 if [ "$(which git)" == "" ]; then
 	hostpkglist+="git"
 fi
+#if [ "$(which ninja)" == "" ]; then
+#	hostpkglist+="ninja"
+#fi
 
 for pkg in $hostpkglist; do
     "$fbuild" "$pkg"
