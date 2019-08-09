@@ -1,5 +1,5 @@
 pkgname="python"
-pkgver="3.7.4"
+pkgver="2.7.14"
 pkgrev="0"
 maintainer="ky0ko <ky0ko@disroot.org>"
 homepage="https://www.python.org/"
@@ -13,3 +13,11 @@ confopts='--enable-shared
 		--with-system-ffi'
 
 export CFLAGS="$CFLAGS -I/include/ncurses/ -I/lib/clang/8.0.0/include/"
+
+function do_prepackage {
+	mkdir -p "$pkgdir"/etc/profile.d/
+	cat >> "$pkgdir"/etc/profile.d/python <<-EOF
+	export PYTHONHOME=/
+	export PYTHONPATH=/lib/python2.7/
+	EOF
+}
