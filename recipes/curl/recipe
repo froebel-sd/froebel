@@ -8,3 +8,4 @@ license="MIT/x"
 dependencies="musl netbsd-csu linux-headers libressl"
 src="https://curl.haxx.se/download/curl-7.61.1.tar.xz"
 FBUILD_BUILDSYSTEM=confmake
+confopts="--with-ca-bundle=/etc/ssl/cert.pem"
