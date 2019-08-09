@@ -53,7 +53,7 @@ do_install() {
 	umask 022
 	PATH="/usr/bin:/bin:/usr/sbin:/sbin"
 	for f in \$(ls -Aw1 /etc/profile.d/); do
-	        source \$f
+	        source /etc/profile.d/"\$f"
 	done
 EOF
 }
