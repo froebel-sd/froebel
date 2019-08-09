@@ -276,6 +276,10 @@ function do_install() {
 	do_install_${FBUILD_BUILDSYSTEM}
 }
 
+function do_prepackage() {
+	echo ""
+}
+
 function do_bootstrap_build() {
     do_build
 }
@@ -289,7 +293,7 @@ function do_bootstrap_install() {
 }
 
 function do_bootstrap_prepackage() {
-    echo ${c_blue}"##empty prepackage stage"
+    do_prepackage
 }
 
 function do_prepare_tmproot() {
@@ -414,6 +418,7 @@ else
 fi
 
 if [ "$fbuild_in_fakeroot" == "yes" ]; then
+    do_step prepackage
     do_step package
     do_step cleanup_tmproot
     #opkg-make-index $FBUILD_REPO > $FBUILD_REPO/Packages
