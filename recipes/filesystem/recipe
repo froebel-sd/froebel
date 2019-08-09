@@ -1,4 +1,5 @@
 #this is a froebel-specific package
+
 pkgname="filesystem"
 pkgver="0.1"
 pkgrev="0"
@@ -48,6 +49,11 @@ do_install() {
     echo "PRETTY_NAME=\"Froebel $pkgver ($codename)\""
     echo "=\"\"" >> "$pkgdir"/etc/os-release
 
-    echo "umask 022" > "$pkgdir"/etc/profile
-    echo "PATH=\"/usr/bin:/bin:/usr/sbin:/sbin\"" >> "$pkgdir"/etc/profile
+    cat >> "$pkgdir"/etc/profile <<-EOF
+	umask 022
+	PATH="/usr/bin:/bin:/usr/sbin:/sbin"
+	for f in \$(ls -Aw1 /etc/profile.d/); do
+	        source \$f
+	done
+EOF
 }
