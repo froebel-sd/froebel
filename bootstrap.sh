@@ -22,27 +22,32 @@ log run by `whoami`@`hostname` on `uname -s -m -r` at `date`
 hostpkglist=""
 
 if [ "$(which mksh)" == "" ]; then
-	hostpkglist+="mksh"
+	hostpkglist+="mksh "
+fi
+if [ "$(which bmake)" == "" ]; then
+	hostpkglist+="bmake "
 fi
 if [ "$(which python)" == "" ]; then
-	hostpkglist+="python"
+	hostpkglist+="python "
 fi
-if [ "$(which clang-tblgen)" == "" ]; then
-	hostpkglist+="clang-tblgen"
-fi
+#if [ "$(which clang-tblgen)" == "" ]; then
+#	hostpkglist+="clang-tblgen "
+#fi
 if [ "$(which perl)" == "" ]; then
-	hostpkglist+="perl"
+	hostpkglist+="perl "
 fi
 if [ "$(which git)" == "" ]; then
-	hostpkglist+="git"
+	hostpkglist+="git "
 fi
 #if [ "$(which ninja)" == "" ]; then
-#	hostpkglist+="ninja"
+#	hostpkglist+="ninja "
 #fi
 
 for pkg in $hostpkglist; do
-    "$fbuild" "$pkg"
+	"$fbuild" "$pkg"
 done
+
+ln -s "$(which clang)" "$(pwd)"/bin/llvm-gcc
 
 log ${c_yellow} creating cmake toolchain file${c_reset}
 

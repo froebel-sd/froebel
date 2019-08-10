@@ -144,6 +144,7 @@ function do_build_confmake() {
 
 	export SED=sed
 	export GREP=grep
+	export LIBCC="$(clang -print-libgcc-file-name)"
 
 	confopts_default="--prefix= \
 				--host=$HOST_TRIPLE \
