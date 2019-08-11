@@ -8,3 +8,9 @@ license=""
 dependencies="musl"
 builddeps="netbsd-csu"
 src="http://ftp.gnu.org/gnu/${pkgname}/${pkgname}-${pkgver}.tar.xz"
+confopts="-C"
+
+do_prepare() {
+	cd "$srcdir"/"$pkgname"-"$pkgver"/
+	echo 'acx_cv_cc_gcc_supports_ada=${acx_cv_cc_gcc_supports_ada=no}' > config.cache
+}
