@@ -5,11 +5,11 @@ source common/log.sh
 source common/build_target.conf
 
 if [ -f .froebel_bootstrap ]; then
-    export PATH=`pwd`/bin:$PATH
+    export PATH=$PATH:"$(pwd)"/bin
 
     export FBUILD_BOOTSTRAP=no
-    export FBUILD_REPO=`pwd`/packages
-    export froebelroot=`pwd`
+    export FBUILD_REPO="$(pwd)"/packages
+    export froebelroot="$(pwd)"
     fbuild="mksh $froebelroot/common/fbuild_lite.sh"
 fi
 

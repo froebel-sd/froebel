@@ -25,6 +25,7 @@ cmakeopts="
         -DCLANG_HAVE_LIBXML="NO" \
         -DCLANG_INCLUDE_TESTS="NO" \
 	-DCLANG_ANALYZER_BUILD_Z3="NO" \
+	-DCLANG_TBLGEN="$(which clang-tblgen)" \
 	"
 
 builddir="$srcdir"/cfe-"$pkgver".src
