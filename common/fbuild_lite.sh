@@ -162,7 +162,7 @@ function do_build_confmake() {
 	echo $(pwd)
 	./configure $confopts_final 2>&1 | tee -a $buildlog
 
-	make CFLAGS="$CFLAGS" LDFLAGS="$LDFLAGS" LD="$LD" $makeopts 2>&1 | tee -a $buildlog 
+	make CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" LDFLAGS="$LDFLAGS" LD="$LD" $makeopts 2>&1 | tee -a $buildlog 
 }
 
 function do_build_cmake() {
