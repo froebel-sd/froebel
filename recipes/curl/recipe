@@ -8,4 +8,8 @@ license="MIT/x"
 dependencies="musl netbsd-csu linux-headers libressl"
 src="https://curl.haxx.se/download/curl-7.61.1.tar.xz"
 FBUILD_BUILDSYSTEM=confmake
-confopts="--with-ca-bundle=/etc/ssl/cert.pem"
+confopts="--with-ca-bundle=/etc/ssl/cert.pem --disable-libgcc"
+
+# work around libtool problems on some hosts
+export LD="$LD -rtlib=compiler-rt"
+export CC="$CC -rtlib=compiler-rt"
