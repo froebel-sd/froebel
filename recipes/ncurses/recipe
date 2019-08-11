@@ -22,7 +22,7 @@ do_build() {
         --disable-big-core \
 	 --without-cxx \
 	 --without-cxx-binding \
-
+	--without-progs \
     make   
 }
 
