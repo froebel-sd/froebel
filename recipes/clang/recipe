@@ -24,6 +24,7 @@ cmakeopts="
         -DLLVM_LIBDIR_SUFFIX="" \
         -DCLANG_HAVE_LIBXML="NO" \
         -DCLANG_INCLUDE_TESTS="NO" \
+	-DCLANG_ANALYZER_BUILD_Z3="NO" \
 	"
 
 builddir="$srcdir"/cfe-"$pkgver".src
