@@ -1,18 +1,32 @@
-IGNORE ALL OF THIS PROBABLY
-===========================
-
 froebel linux
 =======
 
-this repository is intended to contain the entire package repository and build system for froebel linux.
+**warning: this may not be completely up to date.
+take this information with a grain of salt.**
 
-from within froebel, you can go to any recipe directory and type 'fbuild' to build the package, or use the 'build_all.sh' and 'build_iso_*.sh' scripts to build a full system.
+this repository is intended to contain the package repository and build system for froebel linux.
 
-you can also build froebel from systems that are not running froebel. you will need to be running in a unix-like environment with LLVM/Clang 5.0.0 or later, a GNU-compatible Make, Cmake, fakeroot, and an implementation of wget.
-also probably some other stuff.
+from within froebel, it is intended that you will be able to use the "fbuild" command to build any package in the tree.
+this is not yet implemented.
 
-the build system is currently messy and does not dependency check, so building packages manually may be fraught with difficulty.
+you can also build froebel from systems that are not running froebel. 
+for this, you will need:
+* a unix-like environment
+* llvm/clang 5.0.0 or later (8.0.0 *highly* recommended)
+* gnu make
+* cmake
+* fakeroot
+* curl
+* mksh
+optionally, you will also need:
+* clang-tblgen
+* python
+* perl
+* bmake
 
+if you do not have the optional dependencies fbuild will attempt to build them for you. this does not work perfectly.
+
+the build system is currently messy and does not properly dependency check, so building packages manually may be fraught with difficulty.
 
 building from scratch
 =====================
@@ -25,23 +39,25 @@ then, run:
 
     ./bootstrap
 
-this will set up the froebel build system for cross-compiling to that platform, and build the shell used for the rest of the scripts.
+this will set up the froebel build system for cross-compiling to that platform, and attempt to build any optional dependencies
+that you do not have.
 
-once you have that, run:
+then, run:
 
     ./build_bootstrap_base.sh
 
 this will build an extremely basic chroot tarball for the target platform with little more than a set of core utilities and an llvm/clang toolchain.
 after you have this, extract the chroot on your target platform, and copy the froebel source tree somewhere within it.
 
-then run:
+if you run:
 
     ./build_bootstrap_final.sh
 
 this will build the remaining packages necessary for building a complete system image, and create a second tarball.
 you may then either untar that on your existing chroot, or use it to create a separate chroot.
 
-then, inside the resulting environment, you can run any of the other build*.sh scripts to build a rootfs or bootiso image.
+any packages that are in final but not in base are **not** guaranteed to cross compile properly and may require
+being built within a froebel chroot.
 
 design goals
 ============

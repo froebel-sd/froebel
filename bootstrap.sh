@@ -19,6 +19,9 @@ fbuild="./common/fbuild_lite.sh"
 log ${c_yellow}\#\# Froebel Bootstrap${c_reset}
 log run by `whoami`@`hostname` on `uname -s -m -r` at `date`
 
+ln -s "$(which clang)" "$(pwd)"/bin/llvm-gcc
+ln -s "$(which clang)" "$(pwd)"/bin/cc
+
 hostpkglist=""
 
 if [ "$(which mksh)" == "" ]; then
@@ -54,8 +57,6 @@ for pkg in $hostpkglist; do
     done
     rm -r $tmproot/META
 done
-
-ln -s "$(which clang)" "$(pwd)"/bin/llvm-gcc
 
 log ${c_yellow} creating cmake toolchain file${c_reset}
 
