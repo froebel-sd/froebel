@@ -1,0 +1,78 @@
+pkgname="linux-libre"
+pkgver="4.9.189"
+_pkgver_major=${pkgver%.*.*}
+pkgrev="0"
+maintainer="ky0ko <ky0ko@disroot.org>"
+homepage="https://www.kernel.org/"
+desc="deblobbed linux kernel"
+license="GPLv2"
+src="https://linux-libre.fsfla.org/pub/linux-libre/releases/${pkgver}-gnu/${pkgname}-${pkgver}-gnu.tar.xz"
+#src="https://cdn.kernel.org/pub/linux/kernel/v${_pkgver_major}.x/linux-${pkgver}.tar.xz"
+builddir="$srcdir"/linux-"$pkgver"
+
+_old_do_prepare() {
+	# pull in the kernel config
+	if [ "$FBUILD_CUSTOM_CONFIG" != "" ]; then
+		cp "$FBUILD_CUSTOM_CONFIG" "$builddir"/.config
+	else
+		cp config.$TARGET_ARCH "$builddir"/.config
+	fi
+
+	# enter kernel source directory
+	cd "$builddir"
+
+	# patch kconfig so the firmware loader is marked with an unfulfilled dependency
+	sed -i '/config FW_LOADER/a depends on NONFREE' drivers/base/Kconfig
+
+	# this one's a doozy:
+	# make savedefconfig will process our .config and check its validity before it saves.
+	# thanks to our NONFREE dependency above, it will warn us about any drivers that
+	# select the firmware loader. here, we capture and process that warning into a config
+	# fragment.
+	make savedefconfig 2>&1 | grep warning | sort -u | cut -b11- | sed -e 's/).*//' -e 's/ //g' -e 's/&&/\n/g' | sed -e 's/^/CONFIG_/g' -e 's/$/=n/g' > nofwconfig
+
+	# print a warning if nonfree drivers were found and removed
+	if [ "$(cat nofwconfig)" != "" ]; then
+		log "WARNING: nonfree modules were found and removed in the kernel config."
+	fi
+
+	# take the config fragment from earlier and merge it with our existing .config
+	sh scripts/kconfig/merge_config.sh .config nofwconfig
+
+	# now we can build!
+	# this whole song and dance is to make sure we can't accidentally enable nonfree firmware loading.
+	# there generally isn't free firmware available for most devices, so we go ahead and assume that all
+	# firmware is nonfree and disable the loader entirely.
+}
+
+function do_prepare() {               
+        # pull in the kernel config
+        if [ "$FBUILD_CUSTOM_CONFIG" != "" ]; then
+		echo "get custom config"
+                cp "$FBUILD_CUSTOM_CONFIG" "$builddir"/.config
+        else                       
+		echo "copy config.$TARGET_ARCH"                           
+                cp config.$TARGET_ARCH "$builddir"/.config    
+        fi   
+
+	# patch makefile so clang can build the kernel with integrated as
+	sed -i 's/-no-integrated-as//g' "$builddir"/Makefile
+
+	# fix duplicate definition in x86_64 copy function
+	sed -i 's/^bad_from_user:$//g' "$builddir"/arch/x86/lib/copy_user_64.S
+}
+
+do_build() {
+	cd "$builddir"
+	make ARCH=$TARGET_ARCH CROSS_COMPILE="" CC=clang AR=llvm-ar OBJCOPY=llvm-objcopy AS=clang LD=ld.lld NM=llvm-nm STRIP=llvm-strip OBJDUMP=llvm-objdump HOSTCC=clang HOSTLD=ld.lld HOSTAR=llvm-ar -j${NUM_COMPILE_JOBS}
+}
+
+do_install() {
+	cd "$builddir"
+	
+	mkdir -p "$pkgdir"/boot "$pkgdir"/lib/modules
+
+	make ARCH=$TARGET_ARCH CROSS_COMPILE="" CC=clang AR=llvm-ar OBJCOPY=llvm-objcopy AS=clang LD=ld.lld NM=llvm-nm STRIP=llvm-strip OBJDUMP=llvm-objdump HOSTCC=clang HOSTLD=ld.lld HOSTAR=llvm-ar -j${NUM_COMPILE_JOBS} \
+		INSTALL_MOD_PATH="$pkgdir" INSTALL_PATH="$pkgdir"/boot install modules_install
+
+}

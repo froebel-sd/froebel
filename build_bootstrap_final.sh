@@ -1,16 +1,15 @@
-#!/bin/sh
+#!/usr/bin/env mksh
 
 source common/colors.sh
 source common/log.sh
-source common/build_host.conf
+source common/build_target.conf
 
 if [ -f .froebel_bootstrap ]; then
-    export PATH=`pwd`/bin:$PATH
+    export PATH=$PATH:"$(pwd)"/bin
 
     export FBUILD_BOOTSTRAP=no
-    export FBUILD_REPO=`pwd`/packages
-    export froebelroot=`pwd`
-    export TARGET_ARCH=`uname -m`
+    export FBUILD_REPO="$(pwd)"/packages
+    export froebelroot="$(pwd)"
     fbuild="mksh $froebelroot/common/fbuild_lite.sh"
 fi
 
@@ -23,7 +22,7 @@ if [ "x$HOST_TRIPLE" = "x" ]; then
     echo "If this is not correct, please set this in build_target.conf"
 fi
 
-basepkgs="filesystem musl linux-headers netbsd-csu mksh zlib libressl curl libffi clang-headers ncurses python libcxxabi-headers libcxx-headers compiler-rt libunwind libcxxabi libcxx llvm clang lld gmake pigz libarchive libcap getopt fakeroot diffutils bmake cmake perl git"
+basepkgs="filesystem linux-headers musl netbsd-csu musl mksh busybox zlib libressl curl libffi ncurses libcxxabi-headers libcxx-headers compiler-rt libunwind libcxxabi libcxx llvm rhash clang-headers clang lld gmake pigz libcap fakeroot diffutils bmake cmake binutils linux-libre"
 
 for pkg in $basepkgs; do
     $fbuild "$pkg"
