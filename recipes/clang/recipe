@@ -17,7 +17,6 @@ cmakeopts="
         -DCLANG_DEFAULT_CXX_STDLIB="libc++" \
         -DCLANG_DEFAULT_LINKER="lld" \
         -DCLANG_DEFAULT_RTLIB="compiler-rt" \
-        -DCLANG_TABLEGEN="$(which clang-tblgen)" \
         -DLLVM_ENABLE_TERMINFO="OFF" \
         -DLLVM_ENABLE_LIBXML2="OFF" \
         -DLLVM_TARGETS_TO_BUILD="all" \
@@ -26,6 +25,7 @@ cmakeopts="
         -DCLANG_INCLUDE_TESTS="NO" \
 	-DCLANG_ANALYZER_BUILD_Z3="NO" \
 	-DCLANG_TBLGEN="$(which clang-tblgen)" \
+	-DLLVM_TBLGEN="$(which llvm-tblgen)" \
 	"
 
 builddir="$srcdir"/cfe-"$pkgver".src
