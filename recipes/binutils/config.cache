@@ -1,0 +1,1 @@
+acx_cv_cc_gcc_supports_ada=${acx_cv_cc_gcc_supports_ada=no}

@@ -9,6 +9,7 @@ license="GPLv2"
 src="https://linux-libre.fsfla.org/pub/linux-libre/releases/${pkgver}-gnu/${pkgname}-${pkgver}-gnu.tar.xz"
 #src="https://cdn.kernel.org/pub/linux/kernel/v${_pkgver_major}.x/linux-${pkgver}.tar.xz"
 builddir="$srcdir"/linux-"$pkgver"
+dependencies="binutils zlib"
 
 _old_do_prepare() {
 	# pull in the kernel config
@@ -56,15 +57,15 @@ function do_prepare() {
         fi   
 
 	# patch makefile so clang can build the kernel with integrated as
-	sed -i 's/-no-integrated-as//g' "$builddir"/Makefile
+	# sed -i 's/-no-integrated-as//g' "$builddir"/Makefile
 
 	# fix duplicate definition in x86_64 copy function
-	sed -i 's/^bad_from_user:$//g' "$builddir"/arch/x86/lib/copy_user_64.S
+	# sed -i 's/^bad_from_user:$//g' "$builddir"/arch/x86/lib/copy_user_64.S
 }
 
 do_build() {
 	cd "$builddir"
-	make ARCH=$TARGET_ARCH CROSS_COMPILE="" CC=clang AR=llvm-ar OBJCOPY=llvm-objcopy AS=clang LD=ld.lld NM=llvm-nm STRIP=llvm-strip OBJDUMP=llvm-objdump HOSTCC=clang HOSTLD=ld.lld HOSTAR=llvm-ar -j${NUM_COMPILE_JOBS}
+	make ARCH=$TARGET_ARCH CROSS_COMPILE="" CC=clang AR=/bin/ar OBJCOPY=llvm-objcopy AS=clang LD=ld.lld NM=llvm-nm STRIP=llvm-strip OBJDUMP=llvm-objdump HOSTCC=clang HOSTLD=ld.lld HOSTAR=/bin/ar -j${NUM_COMPILE_JOBS}
 }
 
 do_install() {
@@ -72,7 +73,7 @@ do_install() {
 	
 	mkdir -p "$pkgdir"/boot "$pkgdir"/lib/modules
 
-	make ARCH=$TARGET_ARCH CROSS_COMPILE="" CC=clang AR=llvm-ar OBJCOPY=llvm-objcopy AS=clang LD=ld.lld NM=llvm-nm STRIP=llvm-strip OBJDUMP=llvm-objdump HOSTCC=clang HOSTLD=ld.lld HOSTAR=llvm-ar -j${NUM_COMPILE_JOBS} \
+	make ARCH=$TARGET_ARCH CROSS_COMPILE="" CC=clang AR=/bin/ar OBJCOPY=llvm-objcopy AS=clang LD=ld.lld NM=llvm-nm STRIP=llvm-strip OBJDUMP=llvm-objdump HOSTCC=clang HOSTLD=ld.lld HOSTAR=/bin/ar -j${NUM_COMPILE_JOBS}
 		INSTALL_MOD_PATH="$pkgdir" INSTALL_PATH="$pkgdir"/boot install modules_install
 
 }
