@@ -7,7 +7,9 @@ homepage="https://libunwind.llvm.org/"
 desc="llvm compiler runtime support library"
 license="MIT/UIUC"
 dependencies="musl netbsd-csu compiler-rt libcxxabi-headers libcxx-headers"
-src="https://releases.llvm.org/${pkgver}/${pkgname}-${pkgver}.src.tar.xz"
+#src="https://releases.llvm.org/${pkgver}/${pkgname}-${pkgver}.src.tar.xz"
+src="https://github.com/llvm/llvm-project/releases/download/llvmorg-${pkgver}/${pkgname}-${pkgver}.src.tar.xz"
+
 builddir="$srcdir"/"$pkgname"-"$pkgver".src
 
 cmakeopts="	-DLLVM_ENABLE_LIBCXX=ON \

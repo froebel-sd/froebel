@@ -34,6 +34,7 @@ if [ "$(which python)" == "" ]; then
 	hostpkglist+="python "
 fi
 if [ "$(which clang-tblgen)" == "" ]; then
+	#echo ""
 	hostpkglist+="clang-tblgen "
 fi
 if [ "$(which perl)" == "" ]; then

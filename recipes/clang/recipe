@@ -9,10 +9,12 @@ desc="LLVM C compiler frontend"
 dependencies="musl compiler-rt libcxxabi libcxx libcxxabi-headers libcxx-headers clang-headers libunwind llvm zlib ncurses"
 builddeps="netbsd-csu"
 license="UoI-NCSA"
-src="http://releases.llvm.org/${pkgver}/cfe-${pkgver}.src.tar.xz"
+#src="http://releases.llvm.org/${pkgver}/cfe-${pkgver}.src.tar.xz"
+src="https://github.com/llvm/llvm-project/releases/download/llvmorg-${pkgver}/${pkgname}-${pkgver}.src.tar.xz"
 cmakeopts="
 	-DCLANG_VENDOR=froebel \
-        -DCLANG_BUILD_EXAMPLES=OFF \
+        -DCMAKE_CROSSCOMPILING=ON \
+	-DCLANG_BUILD_EXAMPLES=OFF \
         -DCLANG_INCLUDE_TESTS=ON \
         -DCLANG_DEFAULT_CXX_STDLIB="libc++" \
         -DCLANG_DEFAULT_LINKER="lld" \
@@ -24,11 +26,10 @@ cmakeopts="
         -DCLANG_HAVE_LIBXML="NO" \
         -DCLANG_INCLUDE_TESTS="NO" \
 	-DCLANG_ANALYZER_BUILD_Z3="NO" \
-	-DCLANG_TBLGEN="$(which clang-tblgen)" \
 	-DLLVM_TBLGEN="$(which llvm-tblgen)" \
 	"
 
-builddir="$srcdir"/cfe-"$pkgver".src
+builddir="$srcdir"/clang-"$pkgver".src
 
 do_prepare() {
     cd "$builddir"

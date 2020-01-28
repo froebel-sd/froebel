@@ -88,7 +88,7 @@ do_test() {
 do_package() {
     mkdir -p $pkgdir/META/
     echo "meta = {" > $pkgdir/META/meta
-    echo "  name = \"$pkgname\"," > $pkgdir/META/meta
+    echo "  name = \"$pkgname\"," >> $pkgdir/META/meta
     echo "  version = \"$pkgver-$pkgrev\"," >> $pkgdir/META/meta
     echo "  arch = \"$TARGET_ARCH\"," >> $pkgdir/META/meta
     echo "  maintainer = \"$maintainer\"," >> $pkgdir/META/meta
@@ -197,8 +197,14 @@ function do_build_cmake() {
 
 	echo "cmakeopts_final is $cmakeopts_final"
 
+	if [ "$no_default_makeopts" = "" ]; then
+		makeopts_final="-j$(nproc) $makeopts"
+	else
+		makeopts_final="$makeopts"
+	fi
+
 	cmake $cmakeopts_final ../
-	make VERBOSE=1
+	make VERBOSE=1 $makeopts_final
 }
 
 
@@ -318,8 +324,8 @@ function do_prepare_tmproot() {
     done
 
     export FBUILD_SYSROOT="$tmproot"
-    export CFLAGS="$CFLAGS --sysroot=$tmproot -isystem$tmproot/include -isystem$tmproot/lib/clang/8.0.0/include"
-    export CXXFLAGS="$CXXFLAGS --sysroot=$tmproot -isystem$tmproot/include/c++/v1 -isystem$tmproot/include -isystem$tmproot/lib/clang/8.0.0/include"
+    export CFLAGS="$CFLAGS --sysroot=$tmproot -isystem$tmproot/include -isystem$tmproot/lib/clang/9.0.1/include"
+    export CXXFLAGS="$CXXFLAGS --sysroot=$tmproot -isystem$tmproot/include/c++/v1 -isystem$tmproot/include -isystem$tmproot/lib/clang/9.0.1/include"
     export LDFLAGS="$LDFLAGS --sysroot=$tmproot -L$tmproot/lib"
 }
 

@@ -8,7 +8,8 @@ homepage="https://llvm.org/"
 desc="LLVM C compiler frontend"
 dependencies="netbsd-csu musl compiler-rt libcxxabi libcxx libcxxabi-headers libcxx-headers libunwind llvm zlib ncurses"
 license="UoI-NCSA"
-src="http://releases.llvm.org/${pkgver}/${pkgname}-${pkgver}.src.tar.xz"
+#src="http://releases.llvm.org/${pkgver}/${pkgname}-${pkgver}.src.tar.xz"
+src="https://github.com/llvm/llvm-project/releases/download/llvmorg-${pkgver}/${pkgname}-${pkgver}.src.tar.xz"
 builddir="$srcdir"/"$pkgname"-"$pkgver".src/build
 cmakeopts="-DLLVM_ENABLE_TERMINFO='OFF' \
 		-DLLVM_ENABLE_LIBXML2='OFF' \

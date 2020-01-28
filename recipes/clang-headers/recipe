@@ -8,9 +8,10 @@ homepage="https://clang.llvm.org/"
 desc="clang compiler headers"
 license="MIT/UIUC"
 dependencies=""
-src="https://releases.llvm.org/${pkgver}/cfe-${pkgver}.src.tar.xz"
+#src="https://releases.llvm.org/${pkgver}/cfe-${pkgver}.src.tar.xz"
+src="https://github.com/llvm/llvm-project/releases/download/llvmorg-${pkgver}/${_pkgname_major}-${pkgver}.src.tar.xz"
 
-builddir="$srcdir"/cfe-"$pkgver".src/
+builddir="$srcdir"/clang-"$pkgver".src/
 
 do_build() {
 }

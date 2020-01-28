@@ -1,13 +1,13 @@
 pkgname="linux-headers"
-pkgver="4.9.189"
+pkgver="5.4.14"
 _pkgver_major=${pkgver%.*.*}
 pkgrev="0"
 maintainer="ky0ko <ky0ko@disroot.org>"
 homepage="https://www.kernel.org/"
 desc="linux kernel headers"
 license="GPLv2"
-#src="https://cdn.kernel.org/pub/linux/kernel/v${_pkgver_major}.x/linux-${pkgver}.tar.xz"
-src="https://linux-libre.fsfla.org/pub/linux-libre/releases/${pkgver}-gnu/linux-libre-${pkgver}-gnu.tar.xz"
+src="https://cdn.kernel.org/pub/linux/kernel/v${_pkgver_major}.x/linux-${pkgver}.tar.xz"
+#src="https://linux-libre.fsfla.org/pub/linux-libre/releases/${pkgver}-gnu/linux-libre-${pkgver}-gnu.tar.xz"
 builddir="$srcdir"/linux-"$pkgver"
 
 do_build() {

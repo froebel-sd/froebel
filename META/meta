@@ -1,0 +1,20 @@
+meta = {
+  name = "clang-tblgen",
+  version = "9.0.1-0",
+  arch = "x86_64",
+  maintainer = "ky0ko <ky0ko@disroot.org>",
+  description = "LLVM C compiler frontend",
+  depends = {
+      "netbsd-csu",
+      "musl",
+      "compiler-rt",
+      "libcxxabi",
+      "libcxx",
+      "libcxxabi-headers",
+      "libcxx-headers",
+      "libunwind",
+      "llvm",
+      "zlib",
+      "ncurses",
+  }
+}

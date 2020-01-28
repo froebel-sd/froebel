@@ -7,7 +7,9 @@ homepage="https://compiler-rt.llvm.org/"
 desc="llvm compiler runtime support library"
 license="MIT/UIUC"
 builddeps="netbsd-csu musl"
-src="https://releases.llvm.org/${pkgver}/${pkgname}-${pkgver}.src.tar.xz"
+#src="https://releases.llvm.org/${pkgver}/${pkgname}-${pkgver}.src.tar.xz"
+src="https://github.com/llvm/llvm-project/releases/download/llvmorg-${pkgver}/${pkgname}-${pkgver}.src.tar.xz"
+
 
 hostdep python
 

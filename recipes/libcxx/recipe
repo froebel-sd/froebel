@@ -7,7 +7,10 @@ homepage="https://libcxx.llvm.org/"
 desc="llvm compiler runtime support library"
 license="MIT/UIUC"
 dependencies="linux-headers musl netbsd-csu compiler-rt libcxxabi-headers libcxxabi libunwind"
-src="https://releases.llvm.org/${pkgver}/${pkgname}-${pkgver}.src.tar.xz"
+#src="https://releases.llvm.org/${pkgver}/${pkgname}-${pkgver}.src.tar.xz"
+src="https://github.com/llvm/llvm-project/releases/download/llvmorg-${pkgver}/${pkgname}-${pkgver}.src.tar.xz"
+
+
 builddir="$srcdir"/"$pkgname"-"$pkgver".src
 export CXX="$CC"
 
