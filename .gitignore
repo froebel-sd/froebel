@@ -1,1 +1,6 @@
 *.tar.gz
+bin/
+recipes/*/src
+packages/*
+*.log
+.froebel_bootstrap
