@@ -1,5 +1,5 @@
 pkgname="musl"
-pkgver="1.1.20"
+pkgver="1.2.1"
 pkgrev="0"
 maintainer="ky0ko <ky0ko@disroot.org>"
 homepage="https://www.musl-libc.org/"

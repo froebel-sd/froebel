@@ -1,11 +1,11 @@
 pkgname="netbsd-csu"
-pkgver="7.1"
+pkgver="9.0_beta"
 pkgrev="0"
 maintainer="ky0ko <ky0ko@disroot.org>"
 homepage="http://cvsweb.netbsd.org/bsdweb.cgi/src/lib/csu/"
 desc="c runtime files from netbsd"
 license="BSD2"
-src="https://dev.gentoo.org/~mgorny/dist/netbsd-csu-7.1.tar.xz"
+src="https://dev.gentoo.org/~mgorny/dist/${pkgname}-${pkgver}.tar.xz"
 
 builddir="$srcdir"/"$pkgname"-"$pkgver"
 
