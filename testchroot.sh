@@ -9,10 +9,10 @@ mkdir -p chroot
 
 PV=$(which pv)
 if [ $? = 0 ]; then
-    pv froebel_micro_rootfs_*.tar.gz | tar -xz -C chroot/
+    pv froebel_stage0*.tar.gz | tar -xz -C chroot/
 else
     echo extracting...
-    tar -xzf froebel_micro_rootfs_*.tar.gz -C chroot/
+    tar -xzf froebel_stage0*.tar.gz -C chroot/
 fi
 cd chroot
 echo mount proc
