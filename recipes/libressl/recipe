@@ -1,5 +1,5 @@
 pkgname="libressl"
-pkgver="2.8.0"
+pkgver="3.2.3"
 pkgrev="0"
 maintainer="ky0ko <ky0ko@disroot.org>"
 homepage="https://www.libressl.org/"
