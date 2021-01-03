@@ -1,0 +1,10 @@
+pkgname="nasm"
+pkgver="2.15.05"
+pkgrev="0"
+maintainer="ky0ko <ky0ko@disroot.org>"
+homepage=""https://nasm.us/
+desc="Netwide ASseMbler, a portable x86 assembler"
+license="BSD2"
+src="https://www.nasm.us/pub/nasm/releasebuilds/${pkgver}/${pkgname}-${pkgver}.tar.xz"
+
+builddir="$srcdir"/"$pkgname"-"$pkgver"
