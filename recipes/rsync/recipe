@@ -1,0 +1,10 @@
+pkgname="rsync"
+pkgver="3.2.3"
+pkgrev="0"
+maintainer="ky0ko <ky0ko@disroot.org>"
+homepage="https://rsync.samba.org/"
+desc="fast file transfer tool"
+license="GPLv3"
+src="https://download.samba.org/pub/rsync/rsync-3.2.3.tar.gz"
+
+builddir="$srcdir"/"$pkgname"-"$pkgver"
