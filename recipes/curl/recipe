@@ -1,12 +1,12 @@
 pkgname="curl"
-pkgver="7.61.1"
+pkgver="7.74.0"
 pkgrev="0"
 maintainer="ky0ko <ky0ko@disroot.org>"
 homepage="https://curl.haxx.se/"
 desc="command line download utility and library"
 license="MIT/x"
 dependencies="musl netbsd-csu linux-headers libressl"
-src="https://curl.haxx.se/download/curl-7.61.1.tar.xz"
+src="https://curl.haxx.se/download/${pkgname}-${pkgver}.tar.xz"
 FBUILD_BUILDSYSTEM=confmake
 confopts="--with-ca-bundle=/etc/ssl/cert.pem --disable-libgcc"
 

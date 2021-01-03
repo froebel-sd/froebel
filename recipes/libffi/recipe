@@ -1,5 +1,5 @@
 pkgname="libffi"
-pkgver="3.2.1"
+pkgver="3.3"
 pkgrev="0"
 maintainer="ky0ko <ky0ko@disroot.org>"
 homepage=""
