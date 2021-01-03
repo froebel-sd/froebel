@@ -39,6 +39,8 @@ do_install() {
     mkdir -p tmp
     mkdir -p usr
     mkdir -p var
+    mkdir -p include
+    ln -s include usr/include
     #ln -s lib lib64
 
     echo "Froebel" > "$pkgdir"/etc/froebel-release
@@ -48,6 +50,8 @@ do_install() {
     echo "VERSION_ID=\"$pkgver\""
     echo "PRETTY_NAME=\"Froebel $pkgver ($codename)\""
     echo "=\"\"" >> "$pkgdir"/etc/os-release
+    echo "root:x:0:root" >> "$pkgdir"/etc/group
+    echo "root:x:0:0:root:/root:/bin/mksh" >> "$pkgdir"/etc/passwd
 
     cat >> "$pkgdir"/etc/profile <<-EOF
 	umask 022
