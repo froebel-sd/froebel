@@ -7,7 +7,7 @@ maintainer="ky0ko <ky0ko@disroot.org>"
 homepage="https://clang.llvm.org/"
 desc="clang compiler headers"
 license="MIT/UIUC"
-dependencies=""
+dependencies="musl"
 #src="https://releases.llvm.org/${pkgver}/cfe-${pkgver}.src.tar.xz"
 src="https://github.com/llvm/llvm-project/releases/download/llvmorg-${pkgver}/${_pkgname_major}-${pkgver}.src.tar.xz"
 
@@ -19,7 +19,7 @@ do_build() {
 do_install() {
     cd "$builddir"/lib/Headers
 
-    #mkdir -p "$pkgdir"/lib/clang/${pkgver}/include
+    mkdir -p "$pkgdir"/lib/clang/${pkgver}/include
     mkdir -p "$pkgdir"/include/
     for file in **; do 
         if [ -d $file ]; then
@@ -27,8 +27,10 @@ do_install() {
             mkdir -p "$pkgdir"/lib/clang/${pkgver}/include/"$file"
         else
             echo "install $file"
-            #install -m644 "$file" "$pkgdir"/lib/clang/${pkgver}/include/"$file"
-	    install -m644 "$file" "$pkgdir"/include/"$file"
+            if [ ! -f "$tmproot"/include/"$file" ]; then
+	        install -m644 "$file" "$pkgdir"/include/"$file"
+	    fi
+	    install -m644 "$file" "$pkgdir"/lib/clang/${pkgver}/include/"$file"
         fi
     done
 }
